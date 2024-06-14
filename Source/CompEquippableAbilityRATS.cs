@@ -5,14 +5,9 @@ namespace RATS;
 
 public class CompEquippableAbilityRATS : CompEquippableAbility
 {
-    public CompProperties_EquippableAbilityRATS Props
+    public override void Initialize(CompProperties inPprops)
     {
-        get => this.props as CompProperties_EquippableAbilityRATS;
-    }
-    
-    public override void Initialize(CompProperties props)
-    {
-        base.Initialize(props);
+        base.Initialize(inPprops);
         if (this.Holder == null)
             return;
     }

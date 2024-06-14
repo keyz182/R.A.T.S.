@@ -23,7 +23,7 @@ public class Command_RATS: Command_VerbTarget
     {
         if (!this.drawRadius)
             return;
-            this.verb.verbProps.DrawRadiusRing_NewTemp(this.verb.caster.Position, this.verb);
+        this.verb.verbProps.DrawRadiusRing_NewTemp(this.verb.caster.Position, this.verb);
     }
 
     public override void ProcessInput(Event ev)

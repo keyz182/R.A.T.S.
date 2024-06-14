@@ -53,7 +53,7 @@
     </ItemGroup>
 
     <ItemGroup Condition="'@(Reference->WithMetadataValue('Identity', 'Assembly-CSharp')->Metadata('HintPath')->Exists())' == ''">
-        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.5-*" />
+        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.4104" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Krafs.Publicizer" Version="2.1.0">

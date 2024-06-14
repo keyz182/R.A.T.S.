@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -12,7 +13,7 @@ public class Dialog_RATS(Verb_AbilityRats verb, LocalTargetInfo target, IWindowD
 
     private Verb_AbilityRats verb = verb;
     private LocalTargetInfo target = target;
-    private Color ButtonTextColour = new Color(0.357f, 0.525f, 0.278f);
+    private Color ButtonTextColour = new Color(0.357f, 0.825f, 0.278f);
 
     public override Vector2 InitialSize => new Vector2(845f, 740f);
     protected virtual Vector2 ButtonSize => new Vector2(200f, 40f);
@@ -20,6 +21,21 @@ public class Dialog_RATS(Verb_AbilityRats verb, LocalTargetInfo target, IWindowD
 
     public virtual TaggedString CancelButtonLabel => "CancelButton".Translate();
     public virtual TaggedString WarningText => "";
+
+    public Dictionary<BodyPartDef, float> MultiplierLookup = new Dictionary<BodyPartDef, float>()
+    {
+        { BodyPartDefOf.Leg, 1.4f },
+        { BodyPartDefOf.Eye, 0.6f },
+        { BodyPartDefOf.Shoulder, 0.9f },
+        { BodyPartDefOf.Arm, 1.3f },
+        { BodyPartDefOf.Hand, 0.8f },
+        { BodyPartDefOf.Head, 0.7f },
+        { BodyPartDefOf.Lung, 0.95f },
+        { BodyPartDefOf.Torso, 1.5f },
+        { BodyPartDefOf.Heart, 0.8f }
+    };
+
+    public float GetPartMultiplier(BodyPartDef def) => MultiplierLookup.GetValueOrDefault(def, 1.0f);
     
 
     public virtual void DoHeader(ref RectDivider layout)
@@ -42,19 +58,15 @@ public class Dialog_RATS(Verb_AbilityRats verb, LocalTargetInfo target, IWindowD
         
         if (Widgets.ButtonText((Rect) rectDivider3, (string) this.CancelButtonLabel))
             this.Cancel();
-        var textBlock = new TextBlock(TextAnchor.MiddleRight, ColorLibrary.RedReadable);
-        try
-        {
-            Widgets.Label((Rect) rectDivider4, this.WarningText);
-        }
-        finally
-        {
-            textBlock.Dispose();
-        }
+        Widgets.Label((Rect) rectDivider4, this.WarningText);
     }
 
     public virtual void DoRATS(ref RectDivider layout)
     {
+        var shotReport = verb.GetShotReport();
+        var esitmatedHitChance = shotReport.TotalEstimatedHitChance;
+        esitmatedHitChance = Mathf.Clamp01(esitmatedHitChance * 1.6f);
+        
         using (new ProfilerBlock(nameof (DoRATS)))
         {
             using (TextBlock.Default())
@@ -86,13 +98,11 @@ public class Dialog_RATS(Verb_AbilityRats verb, LocalTargetInfo target, IWindowD
                         rectDivider = colRight.NewRow(45f, marginOverride: 5f);
                     }
 
+                    var partAccuracy = Mathf.CeilToInt(esitmatedHitChance * GetPartMultiplier(parts[i].def) * 100);
                     if (Widgets.ButtonText(
-                            rectDivider, 
-                            parts[i].LabelCap, 
-                            false,
-                            true,
-                            ButtonTextColour,
-                            true));
+                            rect: rectDivider, 
+                            label: $"{parts[i].LabelCap} [{partAccuracy}%]",
+                            drawBackground: false, doMouseoverSound: true, textColor: ButtonTextColour))
                     {
                         verb.RATS_Selection(target, parts[i]);
                         this.Close();
