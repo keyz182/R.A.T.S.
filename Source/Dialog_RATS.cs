@@ -14,6 +14,8 @@ public class Dialog_RATS(Verb_AbilityRats verb, LocalTargetInfo target, IWindowD
     private Verb_AbilityRats verb = verb;
     private LocalTargetInfo target = target;
     private Color ButtonTextColour = new Color(0.357f, 0.825f, 0.278f);
+    
+    private Texture2D Logo = ContentFinder<Texture2D>.Get("UI/RATS_Logo-Small");
 
     public override Vector2 InitialSize => new Vector2(845f, 740f);
     protected virtual Vector2 ButtonSize => new Vector2(200f, 40f);
@@ -37,18 +39,6 @@ public class Dialog_RATS(Verb_AbilityRats verb, LocalTargetInfo target, IWindowD
 
     public float GetPartMultiplier(BodyPartDef def) => MultiplierLookup.GetValueOrDefault(def, 1.0f);
     
-
-    public virtual void DoHeader(ref RectDivider layout)
-    {
-        RectDivider headerLabelRow;
-        using (new TextBlock(GameFont.Medium))
-        {
-            Vector2 vector2 = Text.CalcSize((string) this.title);
-            headerLabelRow = layout.NewRow(vector2.y);
-            Widgets.Label((Rect) headerLabelRow.NewCol(vector2.x), this.title);
-        }
-    }
-
     public virtual void DoButtonRow(ref RectDivider layout)
     {
         RectDivider rectDivider1 = layout.NewRow(this.ButtonSize.y, VerticalJustification.Bottom, new float?(0.0f));
@@ -80,6 +70,10 @@ public class Dialog_RATS(Verb_AbilityRats verb, LocalTargetInfo target, IWindowD
                 RectDivider colLeft = rowBtn.NewCol(100f, HorizontalJustification.Left);
                 RectDivider colMid = rowBtn.NewCol(InitialSize.x - 300f, HorizontalJustification.Left);
                 RectDivider colRight = rowBtn.NewCol(100f, HorizontalJustification.Right);
+                
+                
+                var logoRect = colMid.NewRow(100f);
+                GUI.DrawTexture(logoRect, Logo, ScaleMode.ScaleToFit);
 
                 var portraitRect = colMid.Rect.ContractedBy(30f);
                 RenderTexture texture = PortraitsCache.Get(target.Pawn, portraitRect.size, Rot4.South, new Vector3(0f, 0f, 0.1f), 1.5f, healthStateOverride: PawnHealthState.Mobile);
@@ -121,7 +115,6 @@ public class Dialog_RATS(Verb_AbilityRats verb, LocalTargetInfo target, IWindowD
         {
             RectDivider layout1 = new RectDivider(inRect, 145235235);
             layout1.NewRow(0.0f, VerticalJustification.Bottom, 1f);
-            this.DoHeader(ref layout1);
             layout1.NewRow(0.0f);
             this.DoRATS(ref layout1);
             this.DoButtonRow(ref layout1);
