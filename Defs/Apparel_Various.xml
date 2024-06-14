@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Defs>
+    <ThingDef ParentName="ApparelArmorHelmetReconBase">
+        <defName>Apparel_RATS</defName>
+        <label>R.A.T.S.</label>
+        <description>A targeting computer which provides the pawn with a RimTech Assisisted Targeting System.</description>
+        <graphicData>
+            <texPath>Things/Pawn/Humanlike/Apparel/Gunlink/Gunlink</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+        </graphicData>
+        <comps>
+            <li Class="RATS.CompProperties_EquippableAbilityRATS">
+                <abilityDef>RATSAttack</abilityDef>
+            </li>
+        </comps>
+        <statBases>
+            <ArmorRating_Sharp>0</ArmorRating_Sharp>
+            <ArmorRating_Blunt>0</ArmorRating_Blunt>
+            <ArmorRating_Heat>0</ArmorRating_Heat>
+            <Insulation_Cold>0</Insulation_Cold>
+            <Insulation_Heat>0</Insulation_Heat>
+        </statBases>
+        <recipeMaker>
+            <researchPrerequisite>Gunlink</researchPrerequisite>
+            <displayPriority>400</displayPriority>
+        </recipeMaker>
+        <costList>
+            <ComponentSpacer>2</ComponentSpacer>
+            <ComponentIndustrial>4</ComponentIndustrial>
+            <Plasteel>20</Plasteel>
+            <Steel>40</Steel>
+        </costList>
+        <apparel>
+            <wornGraphicPath>Things/Pawn/Humanlike/Apparel/Gunlink/Gunlink</wornGraphicPath>
+            <renderSkipFlags>
+                <li>None</li>
+            </renderSkipFlags>
+            <countsAsClothingForNudity>false</countsAsClothingForNudity>
+            <bodyPartGroups Inherit="False">
+                <li>UpperHead</li>
+            </bodyPartGroups>
+            <tags Inherit="False">
+                <li>Gunlink</li>
+            </tags>
+        </apparel>
+        <tradeTags>
+            <li>Clothing</li>
+        </tradeTags>
+        <thingSetMakerTags Inherit="False">
+            <li>RewardStandardLowFreq</li>
+        </thingSetMakerTags>
+    </ThingDef>
+</Defs>
