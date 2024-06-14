@@ -12,6 +12,7 @@ public class Dialog_RATS(Verb_AbilityRats verb, LocalTargetInfo target, IWindowD
 
     private Verb_AbilityRats verb = verb;
     private LocalTargetInfo target = target;
+    private Color ButtonTextColour = new Color(0.357f, 0.525f, 0.278f);
 
     public override Vector2 InitialSize => new Vector2(845f, 740f);
     protected virtual Vector2 ButtonSize => new Vector2(200f, 40f);
@@ -85,7 +86,13 @@ public class Dialog_RATS(Verb_AbilityRats verb, LocalTargetInfo target, IWindowD
                         rectDivider = colRight.NewRow(45f, marginOverride: 5f);
                     }
 
-                    if (Widgets.ButtonText((Rect)rectDivider, (string)parts[i].LabelCap, active: true))
+                    if (Widgets.ButtonText(
+                            rectDivider, 
+                            parts[i].LabelCap, 
+                            false,
+                            true,
+                            ButtonTextColour,
+                            true));
                     {
                         verb.RATS_Selection(target, parts[i]);
                         this.Close();
