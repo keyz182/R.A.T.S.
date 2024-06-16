@@ -15,44 +15,46 @@ public class Verb_AbilityRats : Verb_AbilityShoot
     {
     }
 
-    public VerbProperties PrimaryWeaponShootVerbProps =>
-        CasterPawn?.equipment?.Primary?.def?.verbs?.FirstOrDefault(v => v.verbClass.IsAssignableFrom(typeof(Verb_Shoot)));
 
     public CompEquippable PrimaryWeaponEq => CasterPawn?.equipment?.PrimaryEq;
     public ThingWithComps PrimaryWeapon => CasterPawn?.equipment?.Primary;
+
+    public VerbProperties PrimaryWeaponVerbProps =>
+        PrimaryWeapon?.def?.verbs?.FirstOrDefault();
     
-    public override float EffectiveRange
-    {
-        get
-        {
-            if (!this.CasterPawn?.equipment?.Primary?.def?.IsRangedWeapon ?? false)
-                return 0f;
+    public override float EffectiveRange => PrimaryWeapon == null ? 0f : PrimaryWeaponVerbProps.range;
 
-            return PrimaryWeaponShootVerbProps?.range ?? this.verbProps.AdjustedRange(this, this.CasterPawn);
-        }
-    }
-
-    public void RATS_Selection(LocalTargetInfo target, BodyPartRecord part)
+    public void RATS_Selection(LocalTargetInfo target, BodyPartRecord part, float hitChance)
     {
-        if (PrimaryWeaponShootVerbProps != null)
+        if (PrimaryWeaponVerbProps != null)
         {
-            Job job = JobMaker.MakeJob(PrimaryWeaponShootVerbProps.ai_IsWeapon ? JobDefOf.AttackStatic : JobDefOf.UseVerbOnThing);
+  
+                Job job = JobMaker.MakeJob(RATS_DefOf.RATSAttackHybrid);
+
+                job.maxNumMeleeAttacks = 1;
+                job.maxNumStaticAttacks = 1;
+                string uniqueLoadId = Verb.CalculateUniqueLoadID(PrimaryWeaponEq, tool, maneuver);
+                Verb verb = (Verb) Activator.CreateInstance(PrimaryWeaponVerbProps.verbClass);
+                PrimaryWeaponEq.verbTracker.verbs.Add(verb);
+                verb.loadID = uniqueLoadId;
+                verb.verbProps = PrimaryWeaponVerbProps;
+                verb.verbTracker = PrimaryWeaponEq.verbTracker;
+                verb.tool = tool;
+                verb.maneuver = maneuver;
+                verb.caster = caster;
             
-            string uniqueLoadId = Verb.CalculateUniqueLoadID(PrimaryWeaponEq, tool, maneuver);
-            Verb verb = (Verb) Activator.CreateInstance(PrimaryWeaponShootVerbProps.verbClass);
-            PrimaryWeaponEq.verbTracker.verbs.Add(verb);
-            verb.loadID = uniqueLoadId;
-            verb.verbProps = PrimaryWeaponShootVerbProps;
-            verb.verbTracker = PrimaryWeaponEq.verbTracker;
-            verb.tool = tool;
-            verb.maneuver = maneuver;
-            verb.caster = caster;
             
-            
-            job.verbToUse = verb;
-            job.targetA = target;
-            job.endIfCantShootInMelee = true;
-            this.CasterPawn.jobs.TryTakeOrderedJob(job);
+                job.verbToUse = verb;
+                job.targetA = this.caster;
+                job.targetB = this.currentTarget = target;
+                job.endIfCantShootInMelee = true;
+
+                if (RATS_GameComponent.ActiveAttacks.ContainsKey(CasterPawn))
+                    RATS_GameComponent.ActiveAttacks.Remove(CasterPawn);
+                RATS_GameComponent.ActiveAttacks.Add(this.CasterPawn, new RATS_GameComponent.RATSAction(this.currentTarget.Pawn, part, PrimaryWeapon, hitChance));
+                
+                this.CasterPawn.jobs.TryTakeOrderedJob(job);
+
         }
     }
     
@@ -78,7 +80,7 @@ public class Verb_AbilityRats : Verb_AbilityShoot
     public ThingDef TryGetProjectile()
     {
       CompChangeableProjectile comp = PrimaryWeapon?.GetComp<CompChangeableProjectile>();
-      return comp != null && comp.Loaded ? comp.Projectile : PrimaryWeaponShootVerbProps.defaultProjectile;
+      return comp != null && comp.Loaded ? comp.Projectile : PrimaryWeaponVerbProps.defaultProjectile;
     }
 
     public ShotReport GetShotReport()

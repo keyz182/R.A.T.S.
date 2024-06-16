@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
+    <RATS_Settings_Category>R.A.T.S.</RATS_Settings_Category>
+    <RATS_Settings_Gain_Per_Level>Accuracy Gain Per Level Multiplier [{0}]</RATS_Settings_Gain_Per_Level>
+    <RATS_Settings_Reset>Reset</RATS_Settings_Reset>
     <RATS_CommandAttackWithRats>Attack with R.A.T.S.</RATS_CommandAttackWithRats>
 </LanguageData>

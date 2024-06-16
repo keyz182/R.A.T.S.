@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using UnityEngine;
@@ -16,6 +17,8 @@ public class Dialog_RATS(Verb_AbilityRats verb, LocalTargetInfo target, IWindowD
     private Color ButtonTextColour = new Color(0.357f, 0.825f, 0.278f);
     
     private Texture2D Logo = ContentFinder<Texture2D>.Get("UI/RATS_Logo-Small");
+
+    public Verb Selected;
 
     public override Vector2 InitialSize => new Vector2(845f, 740f);
     protected virtual Vector2 ButtonSize => new Vector2(200f, 40f);
@@ -54,8 +57,13 @@ public class Dialog_RATS(Verb_AbilityRats verb, LocalTargetInfo target, IWindowD
     public virtual void DoRATS(ref RectDivider layout)
     {
         var shotReport = verb.GetShotReport();
+        
+        // Calculate the multiplier, 1 + the sum of level*multiplier over the range 0 - shooting level
+        var pawnMultiplier = 1f + Enumerable.Range(0, verb.CasterPawn.skills.GetSkill(SkillDefOf.Shooting).Level)
+            .Sum(i => i == 0 ? 0 : i * RATSMod.Settings.GainPerLevel);
+        
         var esitmatedHitChance = shotReport.TotalEstimatedHitChance;
-        esitmatedHitChance = Mathf.Clamp01(esitmatedHitChance * 1.6f);
+        esitmatedHitChance = Mathf.Clamp01(esitmatedHitChance * pawnMultiplier);
         
         using (new ProfilerBlock(nameof (DoRATS)))
         {
@@ -73,6 +81,7 @@ public class Dialog_RATS(Verb_AbilityRats verb, LocalTargetInfo target, IWindowD
                 
                 
                 var logoRect = colMid.NewRow(100f);
+        
                 GUI.DrawTexture(logoRect, Logo, ScaleMode.ScaleToFit);
 
                 var portraitRect = colMid.Rect.ContractedBy(30f);
@@ -98,13 +107,15 @@ public class Dialog_RATS(Verb_AbilityRats verb, LocalTargetInfo target, IWindowD
                             label: $"{parts[i].LabelCap} [{partAccuracy}%]",
                             drawBackground: false, doMouseoverSound: true, textColor: ButtonTextColour))
                     {
-                        verb.RATS_Selection(target, parts[i]);
+                        verb.RATS_Selection(target, parts[i], partAccuracy);
+                        Find.TickManager.CurTimeSpeed = TimeSpeed.Normal;
                         this.Close();
                     }
                 }    
             }
         }
     }
+    
     protected virtual void Start() => this.Close();
 
     protected virtual void Cancel() => this.Close();
