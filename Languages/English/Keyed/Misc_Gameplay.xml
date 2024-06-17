@@ -2,6 +2,9 @@
 <LanguageData>
     <RATS_Settings_Category>R.A.T.S.</RATS_Settings_Category>
     <RATS_Settings_Gain_Per_Level>Accuracy Gain Per Level Multiplier [{0}]</RATS_Settings_Gain_Per_Level>
+    <RATS_Settings_Gain_Per_Level_Mouseover>Values less than 1 exponentially scale to zero gain per level. Values greater than 1 exponentially scale to infinity.</RATS_Settings_Gain_Per_Level_Mouseover>
+    <RATS_Settings_ClampingFactor>Clamping Factor for accuracy scaling [{0}]</RATS_Settings_ClampingFactor>
+    <RATS_Settings_ClampingFactor_Mouseover>Clamps the max accuracy boost, and scales appropriately</RATS_Settings_ClampingFactor_Mouseover>
     <RATS_Settings_Reset>Reset</RATS_Settings_Reset>
     <RATS_CommandAttackWithRats>Attack with R.A.T.S.</RATS_CommandAttackWithRats>
 </LanguageData>

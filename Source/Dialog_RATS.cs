@@ -59,8 +59,8 @@ public class Dialog_RATS(Verb_AbilityRats verb, LocalTargetInfo target, IWindowD
         var shotReport = verb.GetShotReport();
         
         // Calculate the multiplier, 1 + the sum of level*multiplier over the range 0 - shooting level
-        var pawnMultiplier = 1f + Enumerable.Range(0, verb.CasterPawn.skills.GetSkill(SkillDefOf.Shooting).Level)
-            .Sum(i => i == 0 ? 0 : i * RATSMod.Settings.GainPerLevel);
+        var pawnMultiplier =
+            RATSMod.Settings.GetClampedValue(verb.CasterPawn.skills.GetSkill(SkillDefOf.Shooting).Level);
         
         var esitmatedHitChance = shotReport.TotalEstimatedHitChance;
         esitmatedHitChance = Mathf.Clamp01(esitmatedHitChance * pawnMultiplier);
