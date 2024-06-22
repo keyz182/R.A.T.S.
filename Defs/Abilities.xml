@@ -30,8 +30,6 @@
             </targetParams>
         </verbProperties>
         <comps>
-            <li Class="RATS.CompProperties_AbilityRATS">
-            </li>
             <li Class="CompProperties_AbilityRequiresCapacity">
                 <capacity>Manipulation</capacity>
             </li>
