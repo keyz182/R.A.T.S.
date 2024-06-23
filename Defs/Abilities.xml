@@ -4,11 +4,10 @@
     <AbilityDef Name="RATSAttack">
         <defName>RATSAttack</defName>
         <abilityClass>RATS.RATSAbility</abilityClass>
-        <iconPath>UI/Abilities/Burner</iconPath>
         <label>R.A.T.S.</label>
         <description>Attack with R.A.T.S.</description>
         <aiCanUse>false</aiCanUse>
-        <!-- <gizmoClass>RATS.Command_RATS</gizmoClass> -->
+        <iconPath>UI/RATS_Logo-Small</iconPath>
         <gizmoClass>RATS.Command_RATS</gizmoClass>
         <displayGizmoWhileUndrafted>True</displayGizmoWhileUndrafted>
         <disableGizmoWhileUndrafted>True</disableGizmoWhileUndrafted>
@@ -19,6 +18,16 @@
         <cooldownTicksRange>120</cooldownTicksRange>
         <verbProperties>
             <verbClass>RATS.Verb_AbilityRats</verbClass>
+            <onlyManualCast>true</onlyManualCast>
+            <defaultCooldownTime>30</defaultCooldownTime>
+            <surpriseAttack>
+                <extraMeleeDamages>
+                    <li>
+                        <def>Stun</def>
+                        <amount>20</amount>
+                    </li>
+                </extraMeleeDamages>
+            </surpriseAttack>
             <targetParams>
                 <canTargetLocations>false</canTargetLocations>
                 <canTargetPawns>true</canTargetPawns>
