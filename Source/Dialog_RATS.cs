@@ -131,13 +131,13 @@ public class Dialog_RATS(
                         rectDivider = colRight.NewRow(45f, marginOverride: 5f);
                     }
 
-                    var partAccuracy = Mathf.CeilToInt(
-                        esitmatedHitChance * GetPartMultiplier(parts[i].def) * 100
-                    );
+                    float partAccuracy = esitmatedHitChance * GetPartMultiplier(parts[i].def);
+                    int partAccuracyPct = Mathf.CeilToInt(partAccuracy * 100);
+
                     if (
                         Widgets.ButtonText(
                             rect: rectDivider,
-                            label: $"{parts[i].LabelCap} [{partAccuracy}%]",
+                            label: $"{parts[i].LabelCap} [{partAccuracyPct}%]",
                             drawBackground: false,
                             doMouseoverSound: true,
                             textColor: ButtonTextColour
