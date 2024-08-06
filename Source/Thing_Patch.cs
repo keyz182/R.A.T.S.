@@ -10,7 +10,11 @@ public static class Thing_Patch
 {
     [HarmonyPrefix]
     [HarmonyPatch(nameof(Thing.TakeDamage))]
-    public static bool TakeDamage_Patch(Thing __instance, ref DamageWorker.DamageResult __result, DamageInfo dinfo)
+    public static bool TakeDamage_Patch(
+        Thing __instance,
+        ref DamageWorker.DamageResult __result,
+        DamageInfo dinfo
+    )
     {
         // if (__instance is Pawn target && dinfo.Instigator is Pawn instigator)
         // {
@@ -35,7 +39,7 @@ public static class Thing_Patch
         //                 }
         //             }
         //         }
-        //         
+        //
         //         bool absorbed;
         //         __instance.PreApplyDamage(ref dinfo, out absorbed);
         //         if (absorbed)
@@ -45,10 +49,8 @@ public static class Thing_Patch
         //         }
         //     }
         // }
-        
-        
-        Log.Message("here");
+
+
         return true;
     }
-    
 }

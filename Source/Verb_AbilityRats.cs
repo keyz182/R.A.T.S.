@@ -10,28 +10,28 @@ public class Verb_AbilityRats : Verb_AbilityShoot
     public CompEquippable PrimaryWeaponEq => CasterPawn?.equipment?.PrimaryEq;
     public ThingWithComps PrimaryWeapon => CasterPawn?.equipment?.Primary;
 
-    public VerbProperties PrimaryWeaponVerbProps =>
-        PrimaryWeapon?.def?.verbs?.FirstOrDefault();
+    public VerbProperties PrimaryWeaponVerbProps => PrimaryWeapon?.def?.Verbs.FirstOrDefault();
 
-    public override float EffectiveRange => PrimaryWeapon == null ? 0f : PrimaryWeaponVerbProps.range;
+    public override float EffectiveRange =>
+        PrimaryWeapon == null ? 0f : PrimaryWeaponVerbProps.range;
 
     public void RATS_Selection(LocalTargetInfo target, BodyPartRecord part, float hitChance)
     {
-        if (PrimaryWeaponVerbProps == null) return;
-        Job job = JobMaker.MakeJob(RATS_DefOf.RATSAttackHybrid);
+        if (PrimaryWeaponVerbProps == null)
+            return;
+        Job job = JobMaker.MakeJob(RATS_DefOf.RATS_AttackHybrid);
 
         job.maxNumMeleeAttacks = 1;
         job.maxNumStaticAttacks = 1;
         string uniqueLoadId = Verb.CalculateUniqueLoadID(PrimaryWeaponEq, tool, maneuver);
         Verb verb = (Verb)Activator.CreateInstance(PrimaryWeaponVerbProps.verbClass);
-        PrimaryWeaponEq.verbTracker.verbs.Add(verb);
+        PrimaryWeaponEq.verbTracker.AllVerbs.Add(verb);
         verb.loadID = uniqueLoadId;
         verb.verbProps = PrimaryWeaponVerbProps;
         verb.verbTracker = PrimaryWeaponEq.verbTracker;
         verb.tool = tool;
         verb.maneuver = maneuver;
         verb.caster = caster;
-
 
         job.verbToUse = verb;
         job.targetA = caster;
@@ -40,8 +40,10 @@ public class Verb_AbilityRats : Verb_AbilityShoot
 
         if (RATS_GameComponent.ActiveAttacks.ContainsKey(CasterPawn))
             RATS_GameComponent.ActiveAttacks.Remove(CasterPawn);
-        RATS_GameComponent.ActiveAttacks.Add(CasterPawn,
-            new RATS_GameComponent.RATSAction(currentTarget.Pawn, part, PrimaryWeapon, hitChance));
+        RATS_GameComponent.ActiveAttacks.Add(
+            CasterPawn,
+            new RATS_GameComponent.RATSAction(currentTarget.Pawn, part, PrimaryWeapon, hitChance)
+        );
 
         CasterPawn.jobs.TryTakeOrderedJob(job);
     }

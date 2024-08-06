@@ -7,7 +7,7 @@ public class RATS_GameComponent(Game game) : GameComponent
 {
     public Game Game = game;
     public static Dictionary<Pawn, RATSAction> ActiveAttacks = new Dictionary<Pawn, RATSAction>();
- 
+
     public class RATSAction(Pawn p, BodyPartRecord b, ThingWithComps t, float chance)
     {
         public Pawn Target = p;
@@ -18,7 +18,13 @@ public class RATS_GameComponent(Game game) : GameComponent
 
     public override void ExposeData()
     {
-        if (ActiveAttacks == null) ActiveAttacks = new Dictionary<Pawn, RATSAction>();
-        Scribe_Collections.Look(ref ActiveAttacks, "ActiveAttacks", LookMode.Reference, LookMode.Reference);
+        if (ActiveAttacks == null)
+            ActiveAttacks = new Dictionary<Pawn, RATSAction>();
+        Scribe_Collections.Look(
+            ref ActiveAttacks,
+            "ActiveAttacks",
+            LookMode.Reference,
+            LookMode.Reference
+        );
     }
 }

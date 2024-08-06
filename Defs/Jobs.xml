@@ -2,7 +2,7 @@
 
 <Defs>
     <JobDef>
-        <defName>RATSAttackHybrid</defName>
+        <defName>RATS_AttackHybrid</defName>
         <driverClass>RATS.JobDriver_AttackHybrid</driverClass>
         <reportString>attacking TargetA.</reportString>
         <alwaysShowWeapon>true</alwaysShowWeapon>

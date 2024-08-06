@@ -5,14 +5,20 @@
     <PropertyGroup>
         <RootNamespace>RATS</RootNamespace>
         <AssemblyName>RATS</AssemblyName>
-        <ZipFilePath>../RATS.zip</ZipFilePath>
-        <ReleasePath>../Release</ReleasePath>
         <TargetFramework>net48</TargetFramework>
         <LangVersion>preview</LangVersion>
         <ModName>R.A.T.S</ModName>
-        <SteamModsPath>$(RIMWORLD_STEAM_MODS_PATH)</SteamModsPath>
+        
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <SteamPath Condition=" '$(RIMWORLD_STEAM_PATH)' == '' ">C:\Program Files (x86)\Steam\steamapps\common\RimWorld</SteamPath>
+        <SteamPath Condition=" '$(RIMWORLD_STEAM_PATH)' != '' ">$(RIMWORLD_STEAM_PATH)</SteamPath>
+        <SteamModsPath Condition=" '$(RIMWORLD_STEAM_MODS_PATH)' == '' ">$(SteamPath)/Mods</SteamModsPath>
+        <SteamModsPath Condition=" '$(RIMWORLD_STEAM_MODS_PATH)' != '' ">$(RIMWORLD_STEAM_MODS_PATH)</SteamModsPath>
         <OutputPath>../Assemblies/</OutputPath>
+        <ZipFilePath>../$(AssemblyName).zip</ZipFilePath>
+        <ReleasePath>../Release</ReleasePath>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -51,44 +57,23 @@
             <Private>False</Private>
         </Reference>
     </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="CSharpier.MsBuild" Version="0.28.2">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Lib.Harmony" Version="2.*" ExcludeAssets="runtime"/>
+    </ItemGroup>
 
     <ItemGroup Condition="'@(Reference->WithMetadataValue('Identity', 'Assembly-CSharp')->Metadata('HintPath')->Exists())' == ''">
         <PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.4104" />
     </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="Krafs.Publicizer" Version="2.1.0">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Lib.Harmony" Version="*" ExcludeAssets="runtime" />
-        <PackageReference Include="UnlimitedHugs.Rimworld.HugsLib" Version="*" ExcludeAssets="runtime" />
-        <!-- Use Version="*-*" to get the latest beta! -->
-    </ItemGroup>
 
-    <ItemGroup>
-        <Compile Update="Properties\Settings.Designer.cs">
-            <DesignTimeSharedInput>True</DesignTimeSharedInput>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Settings.settings</DependentUpon>
-        </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Update="Properties\Settings.settings">
-            <Generator>SettingsSingleFileGenerator</Generator>
-            <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-        </None>
-    </ItemGroup>
-    <ItemGroup>
-        <Publicize Include="Assembly-CSharp" />
-    </ItemGroup>
-
-    <Target Name="CleanAssemblies" AfterTargets="Clean">
-        <RemoveDir Directories="$(OutputPath)" Condition="Exists('$(OutputPath)')" />
-    </Target>
-    <Target Name="PreCleanAssemblies">
-        <RemoveDir Directories="$(OutputPath)" Condition="Exists('$(OutputPath)')" />
-    </Target>
+    <PropertyGroup>
+        <StartAction>Program</StartAction>
+        <StartProgram>$(SteamPath)/RimWorldWin64.exe</StartProgram>
+    </PropertyGroup>
 
     <ItemGroup>
         <ReleaseFiles Include="../*.xml;../*.md;../LICENSE"
@@ -116,6 +101,21 @@
         <GitMeta Include="../.git*">
             <Link>Files/%(RecursiveDir)%(Filename)%(Extension)</Link>
         </GitMeta>
+        <ReleaseFiles Remove="..\Patchs\**" />
+        <PatchFiles Remove="..\Patchs\**" />
+        <GitMeta Remove="..\Patchs\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\Textures\UI\RATS_Logo-Small.png">
+        <Link>Files\Textures\UI\RATS_Logo-Small.png</Link>
+      </Content>
+      <Content Include="..\Textures\UI\RATS_Logo.png">
+        <Link>Files\Textures\UI\RATS_Logo.png</Link>
+      </Content>
+      <Content Include="..\Textures\UI\RATS_Logo.svg">
+        <Link>Files\Textures\UI\RATS_Logo.svg</Link>
+      </Content>
     </ItemGroup>
 
     <!-- Add A step to the build to run csharpier on build -->
@@ -134,7 +134,7 @@
         <Delete Files="$(ZipFilePath)" Condition="Exists('$(ZipFilePath)')" />
     </Target>
 
-    <Target Name="PostBuild" AfterTargets="Build" DependsOnTargets="CleanRelease">
+    <Target Name="PostBuild" AfterTargets="Build" DependsOnTargets="CleanRelease" Condition=" '$(Configuration)' == 'Release' " >
         <MakeDir Directories="$(ReleasePath)" />
         <Copy SourceFiles="@(ReleaseFiles)" DestinationFiles="@(ReleaseFiles->'$(ReleasePath)/%(RecursiveDir)%(Filename)%(Extension)')" />
         <Copy SourceFiles="@(ReleaseAssemblies)" DestinationFiles="@(ReleaseAssemblies->'$(ReleasePath)/%(RecursiveDir)%(Filename)%(Extension)')" />
@@ -143,14 +143,8 @@
         <Copy SourceFiles="@(LanguageFiles)" DestinationFiles="@(LanguageFiles->'$(ReleasePath)/Languages/%(RecursiveDir)%(Filename)%(Extension)')" />
         <Copy SourceFiles="@(PatchFiles)" DestinationFiles="@(PatchFiles->'$(ReleasePath)/Patchs/%(RecursiveDir)%(Filename)%(Extension)')" />
         <Copy SourceFiles="@(SoundFiles)" DestinationFiles="@(SoundFiles->'$(ReleasePath)/Sounds/%(RecursiveDir)%(Filename)%(Extension)')" />
-        <ZipDirectory Condition=" '$(Configuration)' == 'Release' " DestinationFile="$(ZipFilePath)" SourceDirectory="$(ReleasePath)" Overwrite="true" />
-
-        <ItemGroup>
-            <ReleaseFolder Include="../Release/**" />
-            <ReleaseFolder Condition=" '$(Configuration)' == 'Debug' " Include="../Assemblies/*.pdb" />
-        </ItemGroup>
-        <RemoveDir Condition="Exists('$(SteamModsPath)')" Directories="$(SteamModsPath)/$(ModName)" ContinueOnError="true"/>
-        <Copy Condition="Exists('$(SteamModsPath)')" SourceFiles="@(ReleaseFolder)" DestinationFiles="@(ReleaseFolder->'$(SteamModsPath)/$(ModName)/%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+        <ZipDirectory DestinationFile="$(ZipFilePath)" SourceDirectory="$(ReleasePath)" Overwrite="true" />
+        <RemoveDir Condition="Exists('$(ReleasePath)')" Directories="$(ReleasePath)" ContinueOnError="true"/>
     </Target>
 
 </Project>

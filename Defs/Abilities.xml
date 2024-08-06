@@ -1,33 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <Defs>
-    <AbilityDef Name="RATSAttack">
-        <defName>RATSAttack</defName>
-        <abilityClass>RATS.RATSAbility</abilityClass>
+    <AbilityDef>
+        <defName>RATS_Attack</defName>
         <label>R.A.T.S.</label>
         <description>Attack with R.A.T.S.</description>
         <aiCanUse>false</aiCanUse>
         <iconPath>UI/RATS_Logo-Small</iconPath>
         <gizmoClass>RATS.Command_RATS</gizmoClass>
-        <displayGizmoWhileUndrafted>True</displayGizmoWhileUndrafted>
-        <disableGizmoWhileUndrafted>True</disableGizmoWhileUndrafted>
+        <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
         <targetRequired>True</targetRequired>
         <hotKey>Misc12</hotKey>
         <hostile>true</hostile>
         <casterMustBeCapableOfViolence>true</casterMustBeCapableOfViolence>
-        <cooldownTicksRange>120</cooldownTicksRange>
+        <!-- <cooldownTicksRange>120</cooldownTicksRange> -->
         <verbProperties>
             <verbClass>RATS.Verb_AbilityRats</verbClass>
             <onlyManualCast>true</onlyManualCast>
             <defaultCooldownTime>30</defaultCooldownTime>
-            <surpriseAttack>
-                <extraMeleeDamages>
-                    <li>
-                        <def>Stun</def>
-                        <amount>20</amount>
-                    </li>
-                </extraMeleeDamages>
-            </surpriseAttack>
+            <!-- <surpriseAttack> -->
+            <!--     <extraMeleeDamages> -->
+            <!--         <li> -->
+            <!--             <def>Stun</def> -->
+            <!--             <amount>20</amount> -->
+            <!--         </li> -->
+            <!--     </extraMeleeDamages> -->
+            <!-- </surpriseAttack> -->
             <targetParams>
                 <canTargetLocations>false</canTargetLocations>
                 <canTargetPawns>true</canTargetPawns>

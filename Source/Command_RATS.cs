@@ -10,9 +10,9 @@ public class Command_RATS : Command_VerbTarget
     public Ability Ability;
     public Verb_AbilityRats Verb => (Verb_AbilityRats)Ability.verb;
     public Pawn Pawn;
-    
+
     public static readonly Texture2D Tex = ContentFinder<Texture2D>.Get("UI/RATS_Logo-Small");
-    
+
     public override bool Visible
     {
         get
@@ -35,7 +35,6 @@ public class Command_RATS : Command_VerbTarget
     }
 
     public override Color IconDrawColor => defaultIconColor;
-
 
     public override void GizmoUpdateOnMouseover()
     {

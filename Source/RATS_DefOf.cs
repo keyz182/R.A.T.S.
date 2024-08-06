@@ -6,7 +6,7 @@ namespace RATS;
 [DefOf]
 public static class RATS_DefOf
 {
-    public static AbilityDef RATSAttack;
-    public static ThingDef Apparel_RATS;
-    public static JobDef RATSAttackHybrid;
+    public static AbilityDef RATS_Attack;
+    public static ThingDef RATS_RATSLink;
+    public static JobDef RATS_AttackHybrid;
 }

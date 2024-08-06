@@ -2,16 +2,18 @@
 
 <Defs>
     <ThingDef ParentName="ApparelArmorHelmetReconBase">
-        <defName>Apparel_RATS</defName>
+        <defName>RATS_RATSLink</defName>
         <label>R.A.T.S.</label>
-        <description>A targeting computer which provides the pawn with a RimTech Assisisted Targeting System.</description>
+        <description>A neurally linked targeting computer which provides the pawn with the RimTech Assisisted Targeting System.</description>
         <graphicData>
-            <texPath>Things/Pawn/Humanlike/Apparel/Gunlink/Gunlink</texPath>
+            <texPath>Things/RATS_Rats</texPath>
             <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>0.25,0.25</drawSize>
         </graphicData>
         <comps>
-            <li Class="RATS.CompProperties_EquippableAbilityRATS">
-                <abilityDef>RATSAttack</abilityDef>
+            <li Class="CompProperties_CauseHediff_Apparel">
+                <hediff>RATS_RatsLink</hediff>
+                <part>Head</part>
             </li>
         </comps>
         <statBases>
@@ -32,7 +34,7 @@
             <Steel>40</Steel>
         </costList>
         <apparel>
-            <wornGraphicPath>Things/Pawn/Humanlike/Apparel/Gunlink/Gunlink</wornGraphicPath>
+            <wornGraphicPath>Things/RATS_RatsLink</wornGraphicPath>
             <renderSkipFlags>
                 <li>None</li>
             </renderSkipFlags>
@@ -41,7 +43,7 @@
                 <li>UpperHead</li>
             </bodyPartGroups>
             <tags Inherit="False">
-                <li>Gunlink</li>
+                <li>RATS_RATSLink</li>
             </tags>
         </apparel>
         <tradeTags>
