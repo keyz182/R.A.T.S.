@@ -13,19 +13,20 @@
         <hotKey>Misc12</hotKey>
         <hostile>true</hostile>
         <casterMustBeCapableOfViolence>true</casterMustBeCapableOfViolence>
-        <!-- <cooldownTicksRange>120</cooldownTicksRange> -->
+        <cooldownTicksRange>600</cooldownTicksRange>
         <verbProperties>
             <verbClass>RATS.Verb_AbilityRats</verbClass>
             <onlyManualCast>true</onlyManualCast>
             <defaultCooldownTime>30</defaultCooldownTime>
-            <!-- <surpriseAttack> -->
-            <!--     <extraMeleeDamages> -->
-            <!--         <li> -->
-            <!--             <def>Stun</def> -->
-            <!--             <amount>20</amount> -->
-            <!--         </li> -->
-            <!--     </extraMeleeDamages> -->
-            <!-- </surpriseAttack> -->
+            <minRange>0</minRange>
+            <surpriseAttack>
+                <extraMeleeDamages>
+                    <li>
+                        <def>Stun</def>
+                        <amount>20</amount>
+                    </li>
+                </extraMeleeDamages>
+            </surpriseAttack>
             <targetParams>
                 <canTargetLocations>false</canTargetLocations>
                 <canTargetPawns>true</canTargetPawns>

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
+using RimWorld;
 using Verse;
 using Verse.AI;
 
 namespace RATS;
 
-public class Verb_AbilityRats : Verb_AbilityShoot
+public class Verb_AbilityRats : Verb_AbilityShoot, IAbilityVerb
 {
     public CompEquippable PrimaryWeaponEq => CasterPawn?.equipment?.PrimaryEq;
     public ThingWithComps PrimaryWeapon => CasterPawn?.equipment?.Primary;
@@ -15,7 +16,12 @@ public class Verb_AbilityRats : Verb_AbilityShoot
     public override float EffectiveRange =>
         PrimaryWeapon == null ? 0f : PrimaryWeaponVerbProps.range;
 
-    public void RATS_Selection(LocalTargetInfo target, BodyPartRecord part, float hitChance)
+    public void RATS_Selection(
+        LocalTargetInfo target,
+        BodyPartRecord part,
+        float hitChance,
+        ShotReport shotReport
+    )
     {
         if (PrimaryWeaponVerbProps == null)
             return;
@@ -23,7 +29,7 @@ public class Verb_AbilityRats : Verb_AbilityShoot
 
         job.maxNumMeleeAttacks = 1;
         job.maxNumStaticAttacks = 1;
-        string uniqueLoadId = Verb.CalculateUniqueLoadID(PrimaryWeaponEq, tool, maneuver);
+        string uniqueLoadId = CalculateUniqueLoadID(PrimaryWeaponEq, tool, maneuver);
         Verb verb = (Verb)Activator.CreateInstance(PrimaryWeaponVerbProps.verbClass);
         PrimaryWeaponEq.verbTracker.AllVerbs.Add(verb);
         verb.loadID = uniqueLoadId;
@@ -42,8 +48,16 @@ public class Verb_AbilityRats : Verb_AbilityShoot
             RATS_GameComponent.ActiveAttacks.Remove(CasterPawn);
         RATS_GameComponent.ActiveAttacks.Add(
             CasterPawn,
-            new RATS_GameComponent.RATSAction(currentTarget.Pawn, part, PrimaryWeapon, hitChance)
+            new RATS_GameComponent.RATSAction(
+                currentTarget.Pawn,
+                part,
+                PrimaryWeapon,
+                hitChance,
+                shotReport
+            )
         );
+
+        ability.StartCooldown(ability.def.cooldownTicksRange.RandomInRange);
 
         CasterPawn.jobs.TryTakeOrderedJob(job);
     }
@@ -55,7 +69,7 @@ public class Verb_AbilityRats : Verb_AbilityShoot
 
     public override void DrawHighlight(LocalTargetInfo target)
     {
-        this.verbProps.DrawRadiusRing(this.caster.Position);
+        verbProps.DrawRadiusRing(caster.Position);
         if (!target.IsValid)
             return;
         GenDraw.DrawTargetHighlight(target);
@@ -69,5 +83,12 @@ public class Verb_AbilityRats : Verb_AbilityShoot
     public ShotReport GetShotReport()
     {
         return ShotReport.HitReportFor(caster, this, currentTarget);
+    }
+
+    public Ability ability;
+    public Ability Ability
+    {
+        get { return this.ability; }
+        set { this.ability = value; }
     }
 }

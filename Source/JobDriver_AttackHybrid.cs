@@ -44,12 +44,83 @@ public class JobDriver_AttackHybrid : JobDriver
         )
             return false;
 
-        Log.Message(
-            $"RATS attach to {attack.Target} on {attack.Part} with hit chance {attack.HitChance}"
-        );
+        LocalTargetInfo hitTarget = null;
         if (!Rand.Chance(attack.HitChance))
         {
-            return false;
+            Log.Message(
+                $"RATS attack Missed to {attack.Target} on {attack.Part} with hit chance {attack.HitChance}"
+            );
+
+            int missDir = Rand.Range(0, 7);
+
+            IntVec3 tgt = pawn.Map.cellIndices.IndexToCell(0);
+
+            // There's probably a cleaner way to do this. I'm too tired to figure one out.
+            switch (missDir)
+            {
+                case 0:
+                    tgt = TargetB.Cell;
+                    tgt.x += 1;
+                    if (tgt.InBounds(pawn.Map))
+                        break;
+                    goto case 1;
+                case 1:
+                    tgt = TargetB.Cell;
+                    tgt.x += 1;
+                    tgt.z += 1;
+                    if (tgt.InBounds(pawn.Map))
+                        break;
+                    goto case 2;
+                case 2:
+                    tgt = TargetB.Cell;
+                    tgt.z += 1;
+                    if (tgt.InBounds(pawn.Map))
+                        break;
+                    goto case 3;
+                case 3:
+                    tgt = TargetB.Cell;
+                    tgt.x -= 1;
+                    tgt.z += 1;
+                    if (tgt.InBounds(pawn.Map))
+                        break;
+                    goto case 4;
+                case 4:
+                    tgt = TargetB.Cell;
+                    tgt.x -= 1;
+                    if (tgt.InBounds(pawn.Map))
+                        break;
+                    goto case 5;
+                case 5:
+                    tgt = TargetB.Cell;
+                    tgt.x -= 1;
+                    tgt.z -= 1;
+                    if (tgt.InBounds(pawn.Map))
+                        break;
+                    goto case 6;
+                case 6:
+                    tgt = TargetB.Cell;
+                    tgt.z -= 1;
+                    if (tgt.InBounds(pawn.Map))
+                        break;
+                    goto case 7;
+                case 7:
+                    tgt = TargetB.Cell;
+                    tgt.x += 1;
+                    tgt.z -= 1;
+                    if (tgt.InBounds(pawn.Map))
+                        break;
+                    tgt = pawn.Map.cellIndices.IndexToCell(0);
+                    break;
+            }
+
+            hitTarget = tgt;
+        }
+        else
+        {
+            Log.Message(
+                $"RATS attack Hit to {attack.Target} on {attack.Part} with hit chance {attack.HitChance}"
+            );
+            hitTarget = TargetB;
         }
 
         ProjectileHitFlags hitFlags1 = ProjectileHitFlags.IntendedTarget;
@@ -57,7 +128,7 @@ public class JobDriver_AttackHybrid : JobDriver
         projectile2.Launch(
             pawn,
             pawn.DrawPos,
-            TargetB,
+            hitTarget,
             TargetB,
             hitFlags1,
             false,

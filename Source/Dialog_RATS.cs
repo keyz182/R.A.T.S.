@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -31,7 +29,7 @@ public class Dialog_RATS(
     public virtual TaggedString CancelButtonLabel => "CancelButton".Translate();
     public virtual TaggedString WarningText => "";
 
-    public Dictionary<BodyPartDef, float> MultiplierLookup = new Dictionary<BodyPartDef, float>()
+    public Dictionary<BodyPartDef, float> MultiplierLookup = new Dictionary<BodyPartDef, float>
     {
         { BodyPartDefOf.Leg, 1.4f },
         { BodyPartDefOf.Eye, 0.6f },
@@ -48,66 +46,59 @@ public class Dialog_RATS(
 
     public virtual void DoButtonRow(ref RectDivider layout)
     {
-        RectDivider rectDivider1 = layout.NewRow(
-            this.ButtonSize.y,
-            VerticalJustification.Bottom,
-            new float?(0.0f)
-        );
+        RectDivider rectDivider1 = layout.NewRow(ButtonSize.y, VerticalJustification.Bottom, 0.0f);
         RectDivider rectDivider2 = rectDivider1.NewCol(
-            this.ButtonSize.x,
+            ButtonSize.x,
             HorizontalJustification.Right,
-            new float?(10f)
+            10f
         );
-        RectDivider rectDivider3 = rectDivider1.NewCol(this.ButtonSize.x);
+        RectDivider rectDivider3 = rectDivider1.NewCol(ButtonSize.x);
         RectDivider rectDivider4 = rectDivider1.NewCol(
             rectDivider1.Rect.width,
             HorizontalJustification.Right
         );
 
-        if (Widgets.ButtonText((Rect)rectDivider3, (string)this.CancelButtonLabel))
-            this.Cancel();
-        Widgets.Label((Rect)rectDivider4, this.WarningText);
+        if (Widgets.ButtonText(rectDivider3, CancelButtonLabel))
+            Cancel();
+        Widgets.Label(rectDivider4, WarningText);
     }
 
     public virtual void DoRATS(ref RectDivider layout)
     {
-        var shotReport = verb.GetShotReport();
+        ShotReport shotReport = verb.GetShotReport();
 
         // Calculate the multiplier, 1 + the sum of level*multiplier over the range 0 - shooting level
-        var pawnMultiplier = RATSMod.Settings.GetClampedValue(
+        float pawnMultiplier = RATSMod.Settings.GetClampedValue(
             verb.CasterPawn.skills.GetSkill(SkillDefOf.Shooting).Level
         );
 
-        var esitmatedHitChance = shotReport.TotalEstimatedHitChance;
+        float esitmatedHitChance = shotReport.TotalEstimatedHitChance;
         esitmatedHitChance = Mathf.Clamp01(esitmatedHitChance * pawnMultiplier);
 
         using (new ProfilerBlock(nameof(DoRATS)))
         {
             using (TextBlock.Default())
             {
-                var parts = target
+                List<BodyPartRecord> parts = target
                     .Pawn.health.hediffSet.GetNotMissingParts()
                     .Where(p =>
                         p.def == BodyPartDefOf.Torso || p.parent?.def == BodyPartDefOf.Torso
                     )
                     .ToList();
 
-                var partCount = parts.Count();
+                int partCount = parts.Count();
 
-                RectDivider rowBtn = layout.NewRow(600f, VerticalJustification.Top);
+                RectDivider rowBtn = layout.NewRow(600f);
 
-                RectDivider colLeft = rowBtn.NewCol(100f, HorizontalJustification.Left);
-                RectDivider colMid = rowBtn.NewCol(
-                    InitialSize.x - 300f,
-                    HorizontalJustification.Left
-                );
+                RectDivider colLeft = rowBtn.NewCol(100f);
+                RectDivider colMid = rowBtn.NewCol(InitialSize.x - 300f);
                 RectDivider colRight = rowBtn.NewCol(100f, HorizontalJustification.Right);
 
-                var logoRect = colMid.NewRow(100f);
+                RectDivider logoRect = colMid.NewRow(100f);
 
                 GUI.DrawTexture(logoRect, Logo, ScaleMode.ScaleToFit);
 
-                var portraitRect = colMid.Rect.ContractedBy(30f);
+                Rect portraitRect = colMid.Rect.ContractedBy(30f);
                 RenderTexture texture = PortraitsCache.Get(
                     target.Pawn,
                     portraitRect.size,
@@ -119,7 +110,7 @@ public class Dialog_RATS(
 
                 GUI.DrawTexture(portraitRect, texture);
 
-                for (var i = 0; i < partCount; i++)
+                for (int i = 0; i < partCount; i++)
                 {
                     RectDivider rectDivider;
                     if (i <= partCount / 2)
@@ -144,18 +135,18 @@ public class Dialog_RATS(
                         )
                     )
                     {
-                        verb.RATS_Selection(target, parts[i], partAccuracy);
+                        verb.RATS_Selection(target, parts[i], partAccuracy, shotReport);
                         Find.TickManager.CurTimeSpeed = TimeSpeed.Normal;
-                        this.Close();
+                        Close();
                     }
                 }
             }
         }
     }
 
-    protected virtual void Start() => this.Close();
+    protected virtual void Start() => Close();
 
-    protected virtual void Cancel() => this.Close();
+    protected virtual void Cancel() => Close();
 
     public override void DoWindowContents(Rect inRect)
     {
@@ -164,10 +155,10 @@ public class Dialog_RATS(
             RectDivider layout1 = new RectDivider(inRect, 145235235);
             layout1.NewRow(0.0f, VerticalJustification.Bottom, 1f);
             layout1.NewRow(0.0f);
-            this.DoRATS(ref layout1);
-            this.DoButtonRow(ref layout1);
-            layout1.NewRow(0.0f, marginOverride: new float?(20f));
-            layout1.NewCol(20f, marginOverride: new float?(0.0f));
+            DoRATS(ref layout1);
+            DoButtonRow(ref layout1);
+            layout1.NewRow(0.0f, marginOverride: 20f);
+            layout1.NewCol(20f, marginOverride: 0.0f);
         }
     }
 }
