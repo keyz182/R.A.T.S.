@@ -2,7 +2,7 @@
 <ModMetaData>
     <name>R.A.T.S</name>
     <author>keyz182</author>
-    <packageId>RATS.Mod</packageId>
+    <packageId>keyz182.RATS</packageId>
     <description>RimTech Assisted Targeting System.</description>
     <supportedVersions>
         <li>1.5</li>

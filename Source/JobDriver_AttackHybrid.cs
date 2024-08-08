@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using RimWorld;
+using RimWorld.Planet;
 using Verse;
 using Verse.AI;
 
@@ -125,6 +126,8 @@ public class JobDriver_AttackHybrid : JobDriver
 
         ProjectileHitFlags hitFlags1 = ProjectileHitFlags.IntendedTarget;
 
+        projectile2.Graphic.MatSingle.shader = RATS_Shaders.Zoom;
+        RATS_GameComponent.SetSlowMo();
         projectile2.Launch(
             pawn,
             pawn.DrawPos,
