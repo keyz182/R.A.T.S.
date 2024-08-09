@@ -8,7 +8,7 @@ namespace RATS;
 public static class TickManagerPatch
 {
     [HarmonyPrefix]
-    static bool ModifyTickRate(ref float __result)
+    private static bool ModifyTickRate(ref float __result)
     {
         TimeSlower slower = Find.TickManager.slower;
         TimeSpeed curTimeSpeed = Find.TickManager.CurTimeSpeed;
@@ -17,13 +17,9 @@ public static class TickManagerPatch
             return true;
 
         if (slower.ForcedNormalSpeed && curTimeSpeed == TimeSpeed.Paused)
-        {
             __result = 0f;
-        }
         else
-        {
             __result = 0.25F;
-        }
 
         return false;
     }

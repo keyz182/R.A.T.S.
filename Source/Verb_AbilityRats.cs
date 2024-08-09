@@ -1,17 +1,31 @@
 ﻿using System;
 using System.Linq;
+using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
 
 namespace RATS;
 
-public class Verb_AbilityRats : Verb_AbilityShoot, IAbilityVerb
+public class Verb_AbilityRats : Verb_AbilityShoot
 {
+    public Ability ability;
     public CompEquippable PrimaryWeaponEq => CasterPawn?.equipment?.PrimaryEq;
     public ThingWithComps PrimaryWeapon => CasterPawn?.equipment?.Primary;
 
     public VerbProperties PrimaryWeaponVerbProps => PrimaryWeapon?.def?.Verbs.FirstOrDefault();
+
+    public new Ability Ability
+    {
+        get => ability;
+        set
+        {
+            AccessTools
+                .Field(typeof(Ability), "cooldownDuration")
+                .SetValue(value, RATSMod.Settings.CooldownTicks);
+            ability = value;
+        }
+    }
 
     public override float EffectiveRange =>
         PrimaryWeapon == null ? 0f : PrimaryWeaponVerbProps.range;
@@ -83,12 +97,5 @@ public class Verb_AbilityRats : Verb_AbilityShoot, IAbilityVerb
     public ShotReport GetShotReport()
     {
         return ShotReport.HitReportFor(caster, this, currentTarget);
-    }
-
-    public Ability ability;
-    public Ability Ability
-    {
-        get { return this.ability; }
-        set { this.ability = value; }
     }
 }

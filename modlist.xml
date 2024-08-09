@@ -4,13 +4,15 @@
     <activeMods>
         <li>brrainz.harmony</li>
         <li>ludeon.rimworld</li>
+        <li>brrainz.cameraplus</li>
         <li>ludeon.rimworld.royalty</li>
         <li>ludeon.rimworld.ideology</li>
         <li>ludeon.rimworld.biotech</li>
         <li>ludeon.rimworld.anomaly</li>
-        <li>keyz182.RATS</li>
+        <li>keyz182.rats</li>
         <li>uuugggg.tdbug</li>
         <li>imranfish.xmlextensions</li>
+        <li>grizzlemethis.tickspersecond.rw</li>
     </activeMods>
     <knownExpansions>
         <li>ludeon.rimworld</li>

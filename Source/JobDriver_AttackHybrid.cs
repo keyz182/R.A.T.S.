@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Reflection;
-using HarmonyLib;
 using RimWorld;
-using RimWorld.Planet;
 using Verse;
 using Verse.AI;
 
@@ -10,8 +7,8 @@ namespace RATS;
 
 public class JobDriver_AttackHybrid : JobDriver
 {
-    private bool startedIncapacitated;
     private bool hasAttacked;
+    private bool startedIncapacitated;
 
     public override void ExposeData()
     {
@@ -19,7 +16,10 @@ public class JobDriver_AttackHybrid : JobDriver
         Scribe_Values.Look(ref startedIncapacitated, "startedIncapacitated");
     }
 
-    public override bool TryMakePreToilReservations(bool errorOnFailed) => true;
+    public override bool TryMakePreToilReservations(bool errorOnFailed)
+    {
+        return true;
+    }
 
     public bool TryStartAttack(LocalTargetInfo targ)
     {
@@ -28,19 +28,11 @@ public class JobDriver_AttackHybrid : JobDriver
         bool allowManualCastWeapons = !pawn.IsColonist;
         Verb attackVerb = pawn.TryGetAttackVerb(targ.Thing, allowManualCastWeapons);
 
-        ShootLine resultingLine;
         bool shootLineFromTo = attackVerb.TryFindShootLineFromTo(
             TargetThingA.Position,
             TargetThingB.Position,
-            out resultingLine
+            out ShootLine resultingLine
         );
-
-        ThingDef projectileDef = attackVerb.GetProjectile();
-        Projectile projectile = (Projectile)
-            GenSpawn.Spawn(projectileDef, resultingLine.Source, TargetThingA.Map);
-        Projectile zoomProjectile = (Projectile)
-            GenSpawn.Spawn(RATS_DefOf.RATS_Zoomer, resultingLine.Source, TargetThingA.Map);
-
         if (
             !RATS_GameComponent.ActiveAttacks.TryGetValue(
                 pawn,
@@ -48,6 +40,21 @@ public class JobDriver_AttackHybrid : JobDriver
             )
         )
             return false;
+
+        ThingDef projectileDef = attackVerb.GetProjectile();
+        Projectile projectile = (Projectile)
+            GenSpawn.Spawn(projectileDef, resultingLine.Source, TargetThingA.Map);
+
+        if (RATSMod.Settings.EnableZoom)
+        {
+            Thing zoomer = GenSpawn.Spawn(
+                RATS_DefOf.RATS_Zoomer,
+                resultingLine.Source,
+                TargetThingA.Map
+            );
+
+            ((Graphic_Zoomer)zoomer.Graphic).Parent = projectile;
+        }
 
         LocalTargetInfo hitTarget = null;
         if (!Rand.Chance(attack.HitChance))
@@ -128,25 +135,8 @@ public class JobDriver_AttackHybrid : JobDriver
             hitTarget = TargetB;
         }
 
-        zoomProjectile.def.projectile.speed = projectileDef.projectile.speed;
+        // RATS_GameComponent.SetSlowMo(projectile);
 
-        FieldInfo weaponDamageMultiplier = AccessTools.Field(
-            typeof(Projectile),
-            "weaponDamageMultiplier"
-        );
-        weaponDamageMultiplier.SetValue(zoomProjectile, 0f);
-
-        RATS_GameComponent.SetSlowMo(projectile);
-
-        zoomProjectile.Launch(
-            pawn,
-            pawn.DrawPos,
-            hitTarget,
-            null,
-            ProjectileHitFlags.None,
-            false,
-            null
-        );
         projectile.Launch(
             pawn,
             pawn.DrawPos,
@@ -162,14 +152,14 @@ public class JobDriver_AttackHybrid : JobDriver
     protected override IEnumerable<Toil> MakeNewToils()
     {
         yield return Toils_Misc.ThrowColonistAttackingMote(TargetIndex.A);
-        Toil init = ToilMaker.MakeToil();
-        init.initAction = () =>
+        Toil initToil = ToilMaker.MakeToil();
+        initToil.initAction = () =>
         {
             if (TargetThingA is Pawn targetThingA2)
                 startedIncapacitated = targetThingA2.Downed;
             pawn.pather.StopDead();
         };
-        init.tickAction = () =>
+        initToil.tickAction = () =>
         {
             if (!TargetA.IsValid)
             {
@@ -182,16 +172,19 @@ public class JobDriver_AttackHybrid : JobDriver
                     Pawn thing = TargetA.Thing as Pawn;
                     if (
                         TargetA.Thing.Destroyed
-                        || thing != null && !startedIncapacitated && thing.Downed
-                        || thing != null && thing.IsPsychologicallyInvisible()
+                        || (thing != null && !startedIncapacitated && thing.Downed)
+                        || (thing != null && thing.IsPsychologicallyInvisible())
                     )
                     {
                         EndJobWith(JobCondition.Succeeded);
                         return;
                     }
                 }
+
                 if (hasAttacked)
+                {
                     EndJobWith(JobCondition.Succeeded);
+                }
                 else if (TryStartAttack(TargetA))
                 {
                     hasAttacked = true;
@@ -238,8 +231,8 @@ public class JobDriver_AttackHybrid : JobDriver
                 }
             }
         };
-        init.defaultCompleteMode = ToilCompleteMode.Never;
-        init.activeSkill = () => Toils_Combat.GetActiveSkillForToil(init);
-        yield return init;
+        initToil.defaultCompleteMode = ToilCompleteMode.Never;
+        initToil.activeSkill = () => Toils_Combat.GetActiveSkillForToil(initToil);
+        yield return initToil;
     }
 }

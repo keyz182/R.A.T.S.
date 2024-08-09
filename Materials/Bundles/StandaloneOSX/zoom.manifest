@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 135191219
+CRC: 1605613590
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 4b5974ad4c43d4291d43cb92cb6f587f
+    Hash: 74402e75648efd21c1e6a5a53fb0f0d1
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 22357172b8cea85847937e8f62d0c077
+    Hash: 700cce780156dfdd5fdd2ee7678caad4
 HashAppended: 0
 ClassTypes:
 - Class: 21
@@ -15,8 +15,11 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 48
   Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
+- Assets/Shaders/Circle2.png
 - Assets/Shaders/Unlit_ZoomShader.mat
 - Assets/Shaders/ZoomShader.shader
 Dependencies: []

@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
     <RATS_Settings_Category>R.A.T.S.</RATS_Settings_Category>
-    <RATS_Settings_Gain_Per_Level>Accuracy Gain Per Level Multiplier [{0}]</RATS_Settings_Gain_Per_Level>
+    <RATS_Settings_EnableSlowDownTime>Enable time slowdown</RATS_Settings_EnableSlowDownTime>
+    <RATS_Settings_EnableZoom>Enable the zoom shader</RATS_Settings_EnableZoom>
+    <RATS_Settings_ZoomTimeout>How many ticks after creation until we force remove the zoom (in case of bugs): {0} ticks</RATS_Settings_ZoomTimeout>
+    <RATS_Settings_CooldownTicks>How many ticks the RATS cooldown is: {0} ticks</RATS_Settings_CooldownTicks>
+    <RATS_Settings_BodyPartMultipliers>Accuracy multipliers for various body parts.</RATS_Settings_BodyPartMultipliers>
+    <RATS_Settings_Gain_Per_Level>Accuracy Gain Per Level Multiplier [{0}].</RATS_Settings_Gain_Per_Level>
     <RATS_Settings_Gain_Per_Level_Mouseover>Values less than 1 exponentially scale to zero gain per level. Values greater than 1 exponentially scale to infinity.</RATS_Settings_Gain_Per_Level_Mouseover>
     <RATS_Settings_ClampingFactor>Clamping Factor for accuracy scaling [{0}]</RATS_Settings_ClampingFactor>
     <RATS_Settings_ClampingFactor_Mouseover>Clamps the max accuracy boost, and scales appropriately</RATS_Settings_ClampingFactor_Mouseover>

@@ -2,16 +2,13 @@
 <Defs>
     <ThingDef ParentName="BaseBullet">
         <defName>RATS_Zoomer</defName>
+        <altitudeLayer>MoteOverhead</altitudeLayer>
+        <thingClass>RATS.Thing_Zoomer</thingClass>
         <label>autocannon shell</label>
         <graphicData>
-            <texPath>Things/Projectile/Bullet_Big</texPath>
+            <texPath>Things/RATS_Blank</texPath>
             <graphicClass>RATS.Graphic_Zoomer</graphicClass>
             <drawSize>(10,10)</drawSize>
         </graphicData>
-        <projectile>
-            <damageDef>Bullet</damageDef>
-            <stoppingPower>0</stoppingPower>
-            <damageAmountBase>0</damageAmountBase>
-        </projectile>
     </ThingDef>
 </Defs>

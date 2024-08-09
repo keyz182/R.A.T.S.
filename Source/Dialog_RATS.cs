@@ -12,15 +12,17 @@ public class Dialog_RATS(
     IWindowDrawing customWindowDrawing = null
 ) : Window(customWindowDrawing)
 {
-    private string title = "R.A.T.S.";
+    private readonly Color ButtonTextColour = new Color(0.357f, 0.825f, 0.278f);
 
-    private Verb_AbilityRats verb = verb;
-    private LocalTargetInfo target = target;
-    private Color ButtonTextColour = new Color(0.357f, 0.825f, 0.278f);
+    private readonly Texture2D Logo = ContentFinder<Texture2D>.Get("UI/RATS_Logo-Small");
 
-    private Texture2D Logo = ContentFinder<Texture2D>.Get("UI/RATS_Logo-Small");
+    public Dictionary<string, float> MultiplierLookup => RATSMod.Settings.MultiplierLookup;
 
     public Verb Selected;
+    private LocalTargetInfo target = target;
+    private string title = "R.A.T.S.";
+
+    private readonly Verb_AbilityRats verb = verb;
 
     public override Vector2 InitialSize => new Vector2(845f, 740f);
     protected virtual Vector2 ButtonSize => new Vector2(200f, 40f);
@@ -29,29 +31,19 @@ public class Dialog_RATS(
     public virtual TaggedString CancelButtonLabel => "CancelButton".Translate();
     public virtual TaggedString WarningText => "";
 
-    public Dictionary<BodyPartDef, float> MultiplierLookup = new Dictionary<BodyPartDef, float>
+    public float GetPartMultiplier(BodyPartDef def)
     {
-        { BodyPartDefOf.Leg, 1.4f },
-        { BodyPartDefOf.Eye, 0.6f },
-        { BodyPartDefOf.Shoulder, 0.9f },
-        { BodyPartDefOf.Arm, 1.3f },
-        { BodyPartDefOf.Hand, 0.8f },
-        { BodyPartDefOf.Head, 0.7f },
-        { BodyPartDefOf.Lung, 0.95f },
-        { BodyPartDefOf.Torso, 1.5f },
-        { BodyPartDefOf.Heart, 0.8f }
-    };
-
-    public float GetPartMultiplier(BodyPartDef def) => MultiplierLookup.GetWithFallback(def, 1.0f);
+        return MultiplierLookup.GetWithFallback(def.defName, 1.0f);
+    }
 
     public virtual void DoButtonRow(ref RectDivider layout)
     {
         RectDivider rectDivider1 = layout.NewRow(ButtonSize.y, VerticalJustification.Bottom, 0.0f);
-        RectDivider rectDivider2 = rectDivider1.NewCol(
-            ButtonSize.x,
-            HorizontalJustification.Right,
-            10f
-        );
+        // RectDivider rectDivider2 = rectDivider1.NewCol(
+        //     ButtonSize.x,
+        //     HorizontalJustification.Right,
+        //     10f
+        // );
         RectDivider rectDivider3 = rectDivider1.NewCol(ButtonSize.x);
         RectDivider rectDivider4 = rectDivider1.NewCol(
             rectDivider1.Rect.width,
@@ -84,9 +76,10 @@ public class Dialog_RATS(
                     .Where(p =>
                         p.def == BodyPartDefOf.Torso || p.parent?.def == BodyPartDefOf.Torso
                     )
+                    .Where(p => p.coverageAbs > 0.0)
                     .ToList();
 
-                int partCount = parts.Count();
+                int partCount = parts.Count;
 
                 RectDivider rowBtn = layout.NewRow(600f);
 
@@ -113,40 +106,41 @@ public class Dialog_RATS(
                 for (int i = 0; i < partCount; i++)
                 {
                     RectDivider rectDivider;
-                    if (i <= partCount / 2)
-                    {
-                        rectDivider = colLeft.NewRow(45f, marginOverride: 5f);
-                    }
-                    else
-                    {
-                        rectDivider = colRight.NewRow(45f, marginOverride: 5f);
-                    }
+                    rectDivider =
+                        i <= partCount / 2
+                            ? colLeft.NewRow(45f, marginOverride: 5f)
+                            : colRight.NewRow(45f, marginOverride: 5f);
 
                     float partAccuracy = esitmatedHitChance * GetPartMultiplier(parts[i].def);
                     int partAccuracyPct = Mathf.CeilToInt(partAccuracy * 100);
 
                     if (
-                        Widgets.ButtonText(
-                            rect: rectDivider,
-                            label: $"{parts[i].LabelCap} [{partAccuracyPct}%]",
-                            drawBackground: false,
-                            doMouseoverSound: true,
-                            textColor: ButtonTextColour
+                        !Widgets.ButtonText(
+                            rectDivider,
+                            $"{parts[i].LabelCap} [{partAccuracyPct}%]",
+                            false,
+                            true,
+                            ButtonTextColour
                         )
                     )
-                    {
-                        verb.RATS_Selection(target, parts[i], partAccuracy, shotReport);
-                        Find.TickManager.CurTimeSpeed = TimeSpeed.Normal;
-                        Close();
-                    }
+                        continue;
+                    verb.RATS_Selection(target, parts[i], partAccuracy, shotReport);
+                    Find.TickManager.CurTimeSpeed = TimeSpeed.Normal;
+                    Close();
                 }
             }
         }
     }
 
-    protected virtual void Start() => Close();
+    protected virtual void Start()
+    {
+        Close();
+    }
 
-    protected virtual void Cancel() => Close();
+    protected virtual void Cancel()
+    {
+        Close();
+    }
 
     public override void DoWindowContents(Rect inRect)
     {

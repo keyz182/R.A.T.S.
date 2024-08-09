@@ -16,11 +16,8 @@ public static class HarmonyInit
         harmonyInstance = new Harmony("keyz182.RATS");
 
         harmonyInstance.Patch(
-            original: AccessTools.PropertyGetter(
-                typeof(ShaderTypeDef),
-                nameof(ShaderTypeDef.Shader)
-            ),
-            prefix: new HarmonyMethod(typeof(RATSMod), nameof(RATSMod.ShaderFromAssetBundle))
+            AccessTools.PropertyGetter(typeof(ShaderTypeDef), nameof(ShaderTypeDef.Shader)),
+            new HarmonyMethod(typeof(RATSMod), nameof(RATSMod.ShaderFromAssetBundle))
         );
 
         harmonyInstance.PatchAll();

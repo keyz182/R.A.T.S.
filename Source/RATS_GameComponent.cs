@@ -5,15 +5,17 @@ namespace RATS;
 
 public class RATS_GameComponent(Game game) : GameComponent
 {
-    public Game Game = game;
     public static Dictionary<Pawn, RATSAction> ActiveAttacks = new Dictionary<Pawn, RATSAction>();
 
-    public static bool SlowMoActive = false;
+    public static bool SlowMoActive;
     public static int SlowMoStarted = -1;
     public static Thing SlowMoCauser;
+    public Game Game = game;
 
     public static void SetSlowMo(Thing slowMoCauser)
     {
+        if (!RATSMod.Settings.EnableSlowDownTime)
+            return;
         SlowMoStarted = Current.Game.tickManager.TicksGame;
         SlowMoActive = true;
         SlowMoCauser = slowMoCauser;
@@ -26,25 +28,9 @@ public class RATS_GameComponent(Game game) : GameComponent
         SlowMoCauser = null;
     }
 
-    public class RATSAction(
-        Pawn p,
-        BodyPartRecord b,
-        ThingWithComps t,
-        float chance,
-        ShotReport shotReport
-    )
-    {
-        public Pawn Target = p;
-        public BodyPartRecord Part = b;
-        public ThingWithComps Equipment = t;
-        public float HitChance = chance;
-        public ShotReport ShotReport = shotReport;
-    }
-
     public override void ExposeData()
     {
-        if (ActiveAttacks == null)
-            ActiveAttacks = new Dictionary<Pawn, RATSAction>();
+        ActiveAttacks ??= new Dictionary<Pawn, RATSAction>();
         Scribe_Collections.Look(
             ref ActiveAttacks,
             "ActiveAttacks",
@@ -57,11 +43,25 @@ public class RATS_GameComponent(Game game) : GameComponent
     {
         // Safety barrier to prevent getting stuck in slowmo
         if (
-            (SlowMoCauser == null || SlowMoCauser.Destroyed)
-            || SlowMoStarted > 0 && SlowMoStarted + 600 < Current.Game.tickManager.TicksGame
+            SlowMoCauser == null
+            || SlowMoCauser.Destroyed
+            || (SlowMoStarted > 0 && SlowMoStarted + 600 < Current.Game.tickManager.TicksGame)
         )
-        {
             ResetSlowMo();
-        }
+    }
+
+    public class RATSAction(
+        Pawn p,
+        BodyPartRecord b,
+        ThingWithComps t,
+        float chance,
+        ShotReport shotReport
+    )
+    {
+        public ThingWithComps Equipment = t;
+        public float HitChance = chance;
+        public BodyPartRecord Part = b;
+        public ShotReport ShotReport = shotReport;
+        public Pawn Target = p;
     }
 }
