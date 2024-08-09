@@ -1,3 +1,10 @@
+<p>
+  <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3305885232" alt="Steam Workshop Link">
+  <img src="https://img.shields.io/static/v1?label=Steam&message=Workshop&color=blue&logo=steam&link=https://steamcommunity.com/sharedfiles/filedetails/?id=3305885232"/>
+  </a>
+</p>
+
+
 # R.A.T.S. - RimTech Assisted Targeting System
 
 Here's a quick summary of your Rimworld mod, R.A.T.S.:
@@ -14,3 +21,12 @@ Inspired by the iconic VATS system from the Fallout series, R.A.T.S. brings a ne
 * **[_maybe_ coming soon] Action Point Cost:**  Using R.A.T.S. consumes Action Points, adding another layer of tactical consideration to your choices.
 
 With R.A.T.S., turn the tide of any encounter and lead your colonists to victory with calculated precision. 
+
+## Disclaimer
+Portions of the materials used to create this content/mod are trademarks and/or copyrighted works of Ludeon Studios Inc. All rights reserved by Ludeon. This content/mod is not official and is not endorsed by Ludeon.
+
+## Thanks
+* Ludeon for the Game
+* Marnador for the [Rimworld Font](https://github.com/spdskatr/RWModdingResources/raw/master/RimWordFont.ttf)
+* Teslov on discord for the cucumber artwork
+* FontAwesome for the icons

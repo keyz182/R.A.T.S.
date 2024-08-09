@@ -19,6 +19,8 @@
         <OutputPath>../Assemblies/</OutputPath>
         <ZipFilePath>../$(AssemblyName).zip</ZipFilePath>
         <ReleasePath>../Release</ReleasePath>
+        <AssemblyVersion>1.0.1</AssemblyVersion>
+        <FileVersion>1.0.1</FileVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -96,6 +98,12 @@
         <PatchFiles Include="../Patchs/**">
             <Link>Files/Patchs/%(RecursiveDir)%(Filename)%(Extension)</Link>
         </PatchFiles>
+        <BundleFiles Include="../Materials/**">
+            <Link>Files/Materials/%(RecursiveDir)%(Filename)%(Extension)</Link>
+        </BundleFiles>
+        <TextureFiles Include="../Textures/**">
+            <Link>Files/Textures/%(RecursiveDir)%(Filename)%(Extension)</Link>
+        </TextureFiles>
         <SoundFiles Include="../Sounds/**">
             <Link>Files/Sounds/%(RecursiveDir)%(Filename)%(Extension)</Link>
         </SoundFiles>
@@ -141,11 +149,13 @@
     <Target Name="PostBuild" AfterTargets="Build" DependsOnTargets="CleanRelease" Condition=" '$(Configuration)' == 'Release' " >
         <MakeDir Directories="$(ReleasePath)" />
         <Copy SourceFiles="@(ReleaseFiles)" DestinationFiles="@(ReleaseFiles->'$(ReleasePath)/%(RecursiveDir)%(Filename)%(Extension)')" />
-        <Copy SourceFiles="@(ReleaseAssemblies)" DestinationFiles="@(ReleaseAssemblies->'$(ReleasePath)/%(RecursiveDir)%(Filename)%(Extension)')" />
+        <Copy SourceFiles="@(ReleaseAssemblies)" DestinationFiles="@(ReleaseAssemblies->'$(ReleasePath)/Assemblies/%(RecursiveDir)%(Filename)%(Extension)')" />
         <Copy SourceFiles="@(AboutFiles)" DestinationFolder="$(ReleasePath)/About" />
         <Copy SourceFiles="@(DefFiles)" DestinationFiles="@(DefFiles->'$(ReleasePath)/Defs/%(RecursiveDir)%(Filename)%(Extension)')" />
         <Copy SourceFiles="@(LanguageFiles)" DestinationFiles="@(LanguageFiles->'$(ReleasePath)/Languages/%(RecursiveDir)%(Filename)%(Extension)')" />
         <Copy SourceFiles="@(PatchFiles)" DestinationFiles="@(PatchFiles->'$(ReleasePath)/Patchs/%(RecursiveDir)%(Filename)%(Extension)')" />
+        <Copy SourceFiles="@(TextureFiles)" DestinationFiles="@(TextureFiles->'$(ReleasePath)/Textures/%(RecursiveDir)%(Filename)%(Extension)')" />
+        <Copy SourceFiles="@(BundleFiles)" DestinationFiles="@(BundleFiles->'$(ReleasePath)/Materials/%(RecursiveDir)%(Filename)%(Extension)')" />
         <Copy SourceFiles="@(SoundFiles)" DestinationFiles="@(SoundFiles->'$(ReleasePath)/Sounds/%(RecursiveDir)%(Filename)%(Extension)')" />
         <ZipDirectory DestinationFile="$(ZipFilePath)" SourceDirectory="$(ReleasePath)" Overwrite="true" />
         <RemoveDir Condition="Exists('$(ReleasePath)')" Directories="$(ReleasePath)" ContinueOnError="true"/>

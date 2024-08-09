@@ -4,7 +4,7 @@
     <ThingDef ParentName="ApparelArmorHelmetReconBase">
         <defName>RATS_RATSLink</defName>
         <label>R.A.T.S.</label>
-        <description>A neurally linked targeting computer which provides the pawn with the RimTech Assisisted Targeting System.</description>
+        <description>A neurally linked targeting computer which provides the pawn with the RimTech Assisisted Targeting System.\n\nRimtech's latest breakthrough. Seize the moment, cripple your foes, and rewrite the battlefield. Installs a neural interface allowing colonists to temporarily dilate time and target specific body parts. Improves accuracy and tactical options.\n\nEver wish you could hit that raider right in the kneecap? Now you can. (Results may vary.)</description>
         <graphicData>
             <texPath>Things/RATS_Rats</texPath>
             <graphicClass>Graphic_Single</graphicClass>
@@ -24,7 +24,7 @@
             <Insulation_Heat>0</Insulation_Heat>
         </statBases>
         <recipeMaker>
-            <researchPrerequisite>Gunlink</researchPrerequisite>
+            <researchPrerequisite>RATS_RATS</researchPrerequisite>
             <displayPriority>400</displayPriority>
         </recipeMaker>
         <costList>
