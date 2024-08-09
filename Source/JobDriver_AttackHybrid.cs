@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
+using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
@@ -33,9 +35,11 @@ public class JobDriver_AttackHybrid : JobDriver
             out resultingLine
         );
 
-        ThingDef projectile1 = attackVerb.GetProjectile();
-        Projectile projectile2 = (Projectile)
-            GenSpawn.Spawn(projectile1, resultingLine.Source, TargetThingA.Map);
+        ThingDef projectileDef = attackVerb.GetProjectile();
+        Projectile projectile = (Projectile)
+            GenSpawn.Spawn(projectileDef, resultingLine.Source, TargetThingA.Map);
+        Projectile zoomProjectile = (Projectile)
+            GenSpawn.Spawn(RATS_DefOf.RATS_Zoomer, resultingLine.Source, TargetThingA.Map);
 
         if (
             !RATS_GameComponent.ActiveAttacks.TryGetValue(
@@ -124,16 +128,31 @@ public class JobDriver_AttackHybrid : JobDriver
             hitTarget = TargetB;
         }
 
-        ProjectileHitFlags hitFlags1 = ProjectileHitFlags.IntendedTarget;
+        zoomProjectile.def.projectile.speed = projectileDef.projectile.speed;
 
-        projectile2.Graphic.MatSingle.shader = RATS_Shaders.Zoom;
-        RATS_GameComponent.SetSlowMo();
-        projectile2.Launch(
+        FieldInfo weaponDamageMultiplier = AccessTools.Field(
+            typeof(Projectile),
+            "weaponDamageMultiplier"
+        );
+        weaponDamageMultiplier.SetValue(zoomProjectile, 0f);
+
+        RATS_GameComponent.SetSlowMo(projectile);
+
+        zoomProjectile.Launch(
+            pawn,
+            pawn.DrawPos,
+            hitTarget,
+            null,
+            ProjectileHitFlags.None,
+            false,
+            null
+        );
+        projectile.Launch(
             pawn,
             pawn.DrawPos,
             hitTarget,
             TargetB,
-            hitFlags1,
+            ProjectileHitFlags.IntendedTarget,
             false,
             attack.Equipment
         );

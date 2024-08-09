@@ -8,34 +8,22 @@ public class RATS_GameComponent(Game game) : GameComponent
     public Game Game = game;
     public static Dictionary<Pawn, RATSAction> ActiveAttacks = new Dictionary<Pawn, RATSAction>();
 
-    public bool SlowMoActive = false;
-    public int SlowMoStarted = -1;
+    public static bool SlowMoActive = false;
+    public static int SlowMoStarted = -1;
+    public static Thing SlowMoCauser;
 
-    public static void SetSlowMo()
+    public static void SetSlowMo(Thing slowMoCauser)
     {
-        Current.Game.GetComponent<RATS_GameComponent>().SlowMoStarted = Current
-            .Game
-            .tickManager
-            .TicksGame;
-        Current.Game.GetComponent<RATS_GameComponent>().SlowMoActive = true;
+        SlowMoStarted = Current.Game.tickManager.TicksGame;
+        SlowMoActive = true;
+        SlowMoCauser = slowMoCauser;
     }
 
     public static void ResetSlowMo()
     {
-        Current.Game.GetComponent<RATS_GameComponent>().SlowMoStarted = -1;
-        Current.Game.GetComponent<RATS_GameComponent>().SlowMoActive = false;
-    }
-
-    public static float TickRateMultiplier()
-    {
-        RATS_GameComponent gc = Current.Game.GetComponent<RATS_GameComponent>();
-
-        if (gc == null || !gc.SlowMoActive)
-        {
-            return Find.TickManager.TickRateMultiplier;
-        }
-
-        return 0.25f;
+        SlowMoStarted = -1;
+        SlowMoActive = false;
+        SlowMoCauser = null;
     }
 
     public class RATSAction(
@@ -68,10 +56,12 @@ public class RATS_GameComponent(Game game) : GameComponent
     public override void GameComponentTick()
     {
         // Safety barrier to prevent getting stuck in slowmo
-        if (SlowMoStarted > 0 && SlowMoStarted + 600 < Current.Game.tickManager.TicksGame)
+        if (
+            (SlowMoCauser == null || SlowMoCauser.Destroyed)
+            || SlowMoStarted > 0 && SlowMoStarted + 600 < Current.Game.tickManager.TicksGame
+        )
         {
-            SlowMoStarted = -1;
-            SlowMoActive = false;
+            ResetSlowMo();
         }
     }
 }

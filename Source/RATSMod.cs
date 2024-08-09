@@ -34,7 +34,7 @@ namespace RATS
         {
             if (__instance is RATSShaderTypeDef)
             {
-                ___shaderInt = RATS_Shaders.PWBundle.LoadAsset<Shader>(__instance.shaderPath);
+                ___shaderInt = RATS_Shaders.AssetBundle.LoadAsset<Shader>(__instance.shaderPath);
                 if (___shaderInt is null)
                 {
                     Log.Error(

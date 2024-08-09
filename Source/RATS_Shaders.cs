@@ -15,8 +15,11 @@ public static class RATS_Shaders
     public static readonly Shader Zoom = LoadShader(
         Path.Combine("Assets", "Shaders", "ZoomShader.shader")
     );
+    public static readonly Material ZoomMat = LoadMaterial(
+        Path.Combine("Assets", "Shaders", "Unlit_ZoomShader.mat")
+    );
 
-    public static AssetBundle PWBundle
+    public static AssetBundle AssetBundle
     {
         get
         {
@@ -38,7 +41,7 @@ public static class RATS_Shaders
         if (!lookupShaders.ContainsKey(shaderName))
         {
             Log.Message("lookupShaders: " + lookupShaders.ToList().Count);
-            lookupShaders[shaderName] = PWBundle.LoadAsset<Shader>(shaderName);
+            lookupShaders[shaderName] = AssetBundle.LoadAsset<Shader>(shaderName);
         }
         Shader shader = lookupShaders[shaderName];
         if (shader == null)
@@ -51,5 +54,29 @@ public static class RATS_Shaders
             Log.Message("Loaded shaders: " + lookupShaders.Count);
         }
         return shader;
+    }
+
+    public static Material LoadMaterial(string matName)
+    {
+        if (lookupMaterials == null)
+        {
+            lookupMaterials = new Dictionary<string, Material>();
+        }
+        if (!lookupMaterials.ContainsKey(matName))
+        {
+            Log.Message("lookupMaterials: " + lookupMaterials.ToList().Count);
+            lookupMaterials[matName] = AssetBundle.LoadAsset<Material>(matName);
+        }
+        Material mat = lookupMaterials[matName];
+        if (mat == null)
+        {
+            Log.Warning("Could not load material: " + matName);
+            return null;
+        }
+        if (mat != null)
+        {
+            Log.Message("Loaded materials: " + lookupMaterials.Count);
+        }
+        return mat;
     }
 }
