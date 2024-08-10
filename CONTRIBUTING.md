@@ -1,17 +1,22 @@
 # Homebound - A Rimsential Mod
-Thank you for your interest in contributing to the Homebound, a Rimsential mod. This project is very open to contributions,
+
+Thank you for your interest in contributing to the Homebound, a Rimsential mod. This project is very open to
+contributions,
 from people of all skill levels and backgrounds.
 
-Please note we have a [code of conduct](#contributor-covenant---code-of-conduct), please follow it in all your interactions with the project.
+Please note we have a [code of conduct](#contributor-covenant---code-of-conduct), please follow it in all your
+interactions with the project.
 
 ## Pull Request Process
 
-1. When adding compatibility with another mod, make sure it is appropriately isolated using `MayRequire`, `PatchOperationFindMod` or an entry in [loadFolders.xml](loadFolders.xml)
-2. Ensure your contribution is YouTube friendly and follows our code of conduct. 
+1. When adding compatibility with another mod, make sure it is appropriately isolated
+   using `MayRequire`, `PatchOperationFindMod` or an entry in [loadFolders.xml](loadFolders.xml)
+2. Ensure your contribution is YouTube friendly and follows our code of conduct.
 3. Update the README.md if necessary.
 4. Make sure you add any `loadAfter` entries in [About.xml](About/About.xml)
 
-If you're new to modding you can get a lot of useful info off the [Wiki](https://rimworldwiki.com/wiki/Modding_Tutorials)
+If you're new to modding you can get a lot of useful info off
+the [Wiki](https://rimworldwiki.com/wiki/Modding_Tutorials)
 
 # Contributor Covenant - Code of Conduct
 
@@ -74,7 +79,8 @@ representative at an online or offline event.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the community leaders responsible for enforcement via emailing The Modding Community Managers at `feldoh-mod-community 'at' outlook.com`.
+reported to the community leaders responsible for enforcement via emailing The Modding Community Managers
+at `feldoh-mod-community 'at' outlook.com`.
 All complaints will be reviewed and investigated promptly and fairly.
 
 All community leaders are obligated to respect the privacy and security of the
@@ -140,7 +146,11 @@ For answers to common questions about this code of conduct, see the FAQ at
 [https://www.contributor-covenant.org/translations][translations].
 
 [homepage]: https://www.contributor-covenant.org
+
 [v2.1]: https://www.contributor-covenant.org/version/2/1/code_of_conduct.html
+
 [Mozilla CoC]: https://github.com/mozilla/diversity
+
 [FAQ]: https://www.contributor-covenant.org/faq
+
 [translations]: https://www.contributor-covenant.org/translations
