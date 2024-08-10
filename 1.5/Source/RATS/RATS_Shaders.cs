@@ -13,16 +13,17 @@ public static class RATS_Shaders
     private static Dictionary<string, Shader> lookupShaders;
     private static Dictionary<string, Material> lookupMaterials;
 
-    public static readonly Material ZoomMat = LoadMaterial(
-        Path.Combine("Assets", "Shaders", "Unlit_ZoomShader.mat")
-    );
+    public static readonly Material ZoomMat = LoadMaterial(Path.Combine("Assets", "Shaders", "Unlit_ZoomShader.mat"));
 
     public static AssetBundle AssetBundle
     {
         get
         {
             if (bundleInt != null)
+            {
                 return bundleInt;
+            }
+
             bundleInt = RATSMod.mod.MainBundle;
             Log.Message($"bundleInt: {bundleInt.name}");
 
@@ -47,7 +48,10 @@ public static class RATS_Shaders
         }
 
         if (shader != null)
+        {
             Log.Message($"Loaded shaders: {lookupShaders.Count}");
+        }
+
         return shader;
     }
 
@@ -68,7 +72,10 @@ public static class RATS_Shaders
         }
 
         if (mat != null)
+        {
             Log.Message($"Loaded materials: {lookupMaterials.Count}");
+        }
+
         return mat;
     }
 }

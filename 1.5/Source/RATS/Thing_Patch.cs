@@ -8,11 +8,7 @@ public static class Thing_Patch
 {
     [HarmonyPrefix]
     [HarmonyPatch(nameof(Thing.TakeDamage))]
-    public static bool TakeDamage_Patch(
-        Thing __instance,
-        ref DamageWorker.DamageResult __result,
-        DamageInfo dinfo
-    )
+    public static bool TakeDamage_Patch(Thing __instance, ref DamageWorker.DamageResult __result, DamageInfo dinfo)
     {
         // if (__instance is Pawn target && dinfo.Instigator is Pawn instigator)
         // {

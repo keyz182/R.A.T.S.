@@ -20,25 +20,20 @@ public class Verb_AbilityRats : Verb_AbilityShoot
         get => ability;
         set
         {
-            AccessTools
-                .Field(typeof(Ability), "cooldownDuration")
-                .SetValue(value, RATSMod.Settings.CooldownTicks);
+            AccessTools.Field(typeof(Ability), "cooldownDuration").SetValue(value, RATSMod.Settings.CooldownTicks);
             ability = value;
         }
     }
 
-    public override float EffectiveRange =>
-        PrimaryWeapon == null ? 0f : PrimaryWeaponVerbProps.range;
+    public override float EffectiveRange => PrimaryWeapon == null ? 0f : PrimaryWeaponVerbProps.range;
 
-    public void RATS_Selection(
-        LocalTargetInfo target,
-        BodyPartRecord part,
-        float hitChance,
-        ShotReport shotReport
-    )
+    public void RATS_Selection(LocalTargetInfo target, BodyPartRecord part, float hitChance, ShotReport shotReport)
     {
         if (PrimaryWeaponVerbProps == null)
+        {
             return;
+        }
+
         Job job = JobMaker.MakeJob(RATS_DefOf.RATS_AttackHybrid);
 
         job.maxNumMeleeAttacks = 1;
@@ -59,17 +54,11 @@ public class Verb_AbilityRats : Verb_AbilityShoot
         job.endIfCantShootInMelee = true;
 
         if (RATS_GameComponent.ActiveAttacks.ContainsKey(CasterPawn))
+        {
             RATS_GameComponent.ActiveAttacks.Remove(CasterPawn);
-        RATS_GameComponent.ActiveAttacks.Add(
-            CasterPawn,
-            new RATS_GameComponent.RATSAction(
-                currentTarget.Pawn,
-                part,
-                PrimaryWeapon,
-                hitChance,
-                shotReport
-            )
-        );
+        }
+
+        RATS_GameComponent.ActiveAttacks.Add(CasterPawn, new RATS_GameComponent.RATSAction(currentTarget.Pawn, part, PrimaryWeapon, hitChance, shotReport));
 
         ability.StartCooldown(ability.def.cooldownTicksRange.RandomInRange);
 
@@ -85,7 +74,10 @@ public class Verb_AbilityRats : Verb_AbilityShoot
     {
         verbProps.DrawRadiusRing(caster.Position);
         if (!target.IsValid)
+        {
             return;
+        }
+
         GenDraw.DrawTargetHighlight(target);
     }
 

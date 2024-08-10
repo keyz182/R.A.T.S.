@@ -14,12 +14,18 @@ public static class TickManagerPatch
         TimeSpeed curTimeSpeed = Find.TickManager.CurTimeSpeed;
 
         if (!RATS_GameComponent.SlowMoActive)
+        {
             return true;
+        }
 
         if (slower.ForcedNormalSpeed && curTimeSpeed == TimeSpeed.Paused)
+        {
             __result = 0f;
+        }
         else
+        {
             __result = 0.25F;
+        }
 
         return false;
     }

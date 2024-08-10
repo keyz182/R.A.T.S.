@@ -8,17 +8,17 @@
         <TargetFramework>net48</TargetFramework>
         <LangVersion>preview</LangVersion>
         <ModName>R.A.T.S</ModName>
-        
+
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-        <SteamPath Condition=" '$(RIMWORLD_STEAM_PATH)' == '' ">C:\Program Files (x86)\Steam\steamapps\common\RimWorld</SteamPath>
+        <SteamPath Condition=" '$(RIMWORLD_STEAM_PATH)' == '' ">../../../../</SteamPath>
         <SteamPath Condition=" '$(RIMWORLD_STEAM_PATH)' != '' ">$(RIMWORLD_STEAM_PATH)</SteamPath>
         <SteamModsPath Condition=" '$(RIMWORLD_STEAM_MODS_PATH)' == '' ">$(SteamPath)/Mods</SteamModsPath>
         <SteamModsPath Condition=" '$(RIMWORLD_STEAM_MODS_PATH)' != '' ">$(RIMWORLD_STEAM_MODS_PATH)</SteamModsPath>
-        <OutputPath>../Assemblies/</OutputPath>
-        <ZipFilePath>../$(AssemblyName).zip</ZipFilePath>
-        <ReleasePath>../Release</ReleasePath>
+        <OutputPath>../../Assemblies/</OutputPath>
+        <ZipFilePath>../../../$(AssemblyName).zip</ZipFilePath>
+        <ReleasePath>../../../Release</ReleasePath>
         <AssemblyVersion>1.0.1</AssemblyVersion>
         <FileVersion>1.0.1</FileVersion>
     </PropertyGroup>
@@ -43,33 +43,34 @@
 
     <ItemGroup>
         <Reference Include="Assembly-CSharp">
-            <HintPath Condition="Exists('../../../RimWorldWin64_Data')">../../../RimWorldWin64_Data/Managed/Assembly-CSharp.dll</HintPath>
+            <HintPath Condition="Exists('$(SteamPath)/RimWorldWin64_Data')">$(SteamPath)/RimWorldWin64_Data/Managed/Assembly-CSharp.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="Microsoft.CSharp" />
         <Reference Include="UnityEngine.AssetBundleModule">
-          <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+            <HintPath Condition="Exists('$(SteamPath)/RimWorldWin64_Data')">$(SteamPath)/RimWorldWin64_Data/Managed/UnityEngine.AssetBundleModule.dll</HintPath>
+            <Private>False</Private>
         </Reference>
         <Reference Include="UnityEngine.CoreModule">
-            <HintPath Condition="Exists('../../../RimWorldWin64_Data')">../../../RimWorldWin64_Data/Managed/UnityEngine.CoreModule.dll</HintPath>
+            <HintPath Condition="Exists('$(SteamPath)/RimWorldWin64_Data')">$(SteamPath)/RimWorldWin64_Data/Managed/UnityEngine.CoreModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="UnityEngine.TextRenderingModule">
-            <HintPath Condition="Exists('../../../RimWorldWin64_Data')">../../../RimWorldWin64_Data/Managed/UnityEngine.TextRenderingModule.dll</HintPath>
+            <HintPath Condition="Exists('$(SteamPath)/RimWorldWin64_Data')">$(SteamPath)/RimWorldWin64_Data/Managed/UnityEngine.TextRenderingModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="UnityEngine.IMGUIModule">
-            <HintPath Condition="Exists('../../../RimWorldWin64_Data')">../../../RimWorldWin64_Data/Managed/UnityEngine.IMGUIModule.dll</HintPath>
+            <HintPath Condition="Exists('$(SteamPath)/RimWorldWin64_Data')">$(SteamPath)/RimWorldWin64_Data/Managed/UnityEngine.IMGUIModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
     </ItemGroup>
-    
+
     <ItemGroup>
         <PackageReference Include="CSharpier.MsBuild" Version="0.28.2">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Lib.Harmony" Version="2.*" ExcludeAssets="runtime"/>
+        <PackageReference Include="Lib.Harmony" Version="2.*" ExcludeAssets="runtime" />
     </ItemGroup>
 
     <ItemGroup Condition="'@(Reference->WithMetadataValue('Identity', 'Assembly-CSharp')->Metadata('HintPath')->Exists())' == ''">
@@ -82,58 +83,44 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ReleaseFiles Include="../*.xml;../*.md;../LICENSE"
-                      Exclude="../Source/**;../Assemblies/**">
+        <ReleaseFiles Include="../../*.xml;../../../*.xml;../../../*.md;../../../LICENSE"
+                      Exclude="../../Source/**;../../Assemblies/**">
             <Link>Files/%(RecursiveDir)%(Filename)%(Extension)</Link>
         </ReleaseFiles>
-        <AboutFiles Include="../About/**;">
+        <AboutFiles Include="../../About/**;">
             <Link>Files/About/%(RecursiveDir)%(Filename)%(Extension)</Link>
         </AboutFiles>
-        <DefFiles Include="../Defs/**">
+        <DefFiles Include="../../Defs/**">
             <Link>Files/Defs/%(RecursiveDir)%(Filename)%(Extension)</Link>
         </DefFiles>
-        <LanguageFiles Include="../Languages/**">
+        <LanguageFiles Include="../../Languages/**">
             <Link>Files/Languages/%(RecursiveDir)%(Filename)%(Extension)</Link>
         </LanguageFiles>
-        <PatchFiles Include="../Patchs/**">
-            <Link>Files/Patchs/%(RecursiveDir)%(Filename)%(Extension)</Link>
+        <PatchFiles Include="..\..\Patches\**">
+            <Link>Files/Patches/%(RecursiveDir)%(Filename)%(Extension)</Link>
         </PatchFiles>
-        <BundleFiles Include="../Materials/**">
+        <BundleFiles Include="../../Materials/**">
             <Link>Files/Materials/%(RecursiveDir)%(Filename)%(Extension)</Link>
         </BundleFiles>
-        <TextureFiles Include="../Textures/**">
+        <TextureFiles Include="../../Textures/**">
             <Link>Files/Textures/%(RecursiveDir)%(Filename)%(Extension)</Link>
         </TextureFiles>
-        <SoundFiles Include="../Sounds/**">
+        <SoundFiles Include="../../Sounds/**">
             <Link>Files/Sounds/%(RecursiveDir)%(Filename)%(Extension)</Link>
         </SoundFiles>
-        <ReleaseAssemblies Include="../Assemblies/*.dll" Exclude="../Assemblies/0Harmony.dll">
+        <ReleaseAssemblies Include="../../Assemblies/*.dll" Exclude="../Assemblies/0Harmony.dll">
             <Link>Files/Assemblies/%(RecursiveDir)%(Filename)%(Extension)</Link>
         </ReleaseAssemblies>
-        <GitMeta Include="../.git*">
+        <GitMeta Include="../../.git*">
             <Link>Files/%(RecursiveDir)%(Filename)%(Extension)</Link>
         </GitMeta>
-        <ReleaseFiles Remove="..\Patchs\**" />
-        <PatchFiles Remove="..\Patchs\**" />
-        <GitMeta Remove="..\Patchs\**" />
-    </ItemGroup>
 
-    <ItemGroup>
-      <Content Include="..\Textures\UI\RATS_Logo-Small.png">
-        <Link>Files\Textures\UI\RATS_Logo-Small.png</Link>
-      </Content>
-      <Content Include="..\Textures\UI\RATS_Logo.png">
-        <Link>Files\Textures\UI\RATS_Logo.png</Link>
-      </Content>
-      <Content Include="..\Textures\UI\RATS_Logo.svg">
-        <Link>Files\Textures\UI\RATS_Logo.svg</Link>
-      </Content>
     </ItemGroup>
 
     <!-- Add A step to the build to run csharpier on build -->
     <Target Name="CheckCsharpier" BeforeTargets="Build">
         <Exec Command="dotnet csharpier --version" IgnoreExitCode="true">
-            <Output TaskParameter="ExitCode" PropertyName="ExitCode"/>
+            <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
         </Exec>
     </Target>
 
@@ -146,19 +133,19 @@
         <Delete Files="$(ZipFilePath)" Condition="Exists('$(ZipFilePath)')" />
     </Target>
 
-    <Target Name="PostBuild" AfterTargets="Build" DependsOnTargets="CleanRelease" Condition=" '$(Configuration)' == 'Release' " >
+    <Target Name="PostBuild" AfterTargets="Build" DependsOnTargets="CleanRelease" Condition=" '$(Configuration)' == 'Release' ">
         <MakeDir Directories="$(ReleasePath)" />
         <Copy SourceFiles="@(ReleaseFiles)" DestinationFiles="@(ReleaseFiles->'$(ReleasePath)/%(RecursiveDir)%(Filename)%(Extension)')" />
         <Copy SourceFiles="@(ReleaseAssemblies)" DestinationFiles="@(ReleaseAssemblies->'$(ReleasePath)/Assemblies/%(RecursiveDir)%(Filename)%(Extension)')" />
         <Copy SourceFiles="@(AboutFiles)" DestinationFolder="$(ReleasePath)/About" />
         <Copy SourceFiles="@(DefFiles)" DestinationFiles="@(DefFiles->'$(ReleasePath)/Defs/%(RecursiveDir)%(Filename)%(Extension)')" />
         <Copy SourceFiles="@(LanguageFiles)" DestinationFiles="@(LanguageFiles->'$(ReleasePath)/Languages/%(RecursiveDir)%(Filename)%(Extension)')" />
-        <Copy SourceFiles="@(PatchFiles)" DestinationFiles="@(PatchFiles->'$(ReleasePath)/Patchs/%(RecursiveDir)%(Filename)%(Extension)')" />
+        <Copy SourceFiles="@(PatchFiles)" DestinationFiles="@(PatchFiles->'$(ReleasePath)/Patches/%(RecursiveDir)%(Filename)%(Extension)')" />
         <Copy SourceFiles="@(TextureFiles)" DestinationFiles="@(TextureFiles->'$(ReleasePath)/Textures/%(RecursiveDir)%(Filename)%(Extension)')" />
         <Copy SourceFiles="@(BundleFiles)" DestinationFiles="@(BundleFiles->'$(ReleasePath)/Materials/%(RecursiveDir)%(Filename)%(Extension)')" />
         <Copy SourceFiles="@(SoundFiles)" DestinationFiles="@(SoundFiles->'$(ReleasePath)/Sounds/%(RecursiveDir)%(Filename)%(Extension)')" />
         <ZipDirectory DestinationFile="$(ZipFilePath)" SourceDirectory="$(ReleasePath)" Overwrite="true" />
-        <RemoveDir Condition="Exists('$(ReleasePath)')" Directories="$(ReleasePath)" ContinueOnError="true"/>
+        <RemoveDir Condition="Exists('$(ReleasePath)')" Directories="$(ReleasePath)" ContinueOnError="true" />
     </Target>
 
 </Project>

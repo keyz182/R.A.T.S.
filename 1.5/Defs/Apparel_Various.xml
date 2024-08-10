@@ -3,15 +3,15 @@
 <Defs>
     <ThingDef ParentName="ApparelArmorHelmetReconBase">
         <defName>RATS_RATSLink</defName>
-        <label>R.A.T.S.</label>
+        <label>RATSLink</label>
         <description>A neurally linked targeting computer which provides the pawn with the RimTech Assisisted Targeting System.\n\nRimtech's latest breakthrough. Seize the moment, cripple your foes, and rewrite the battlefield. Installs a neural interface allowing colonists to temporarily dilate time and target specific body parts. Improves accuracy and tactical options.\n\nEver wish you could hit that raider right in the kneecap? Now you can. (Results may vary.)</description>
         <graphicData>
             <texPath>Things/RATS_Rats</texPath>
             <graphicClass>Graphic_Single</graphicClass>
-            <drawSize>0.25,0.25</drawSize>
+            <drawSize>1,1</drawSize>
         </graphicData>
         <comps>
-            <li Class="CompProperties_CauseHediff_Apparel">
+            <li Class="RATS.CompProperties_TemporaryHediff_Apparel">
                 <hediff>RATS_RatsLink</hediff>
                 <part>Head</part>
             </li>

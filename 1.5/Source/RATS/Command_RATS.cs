@@ -23,7 +23,9 @@ public class Command_RATS : Command_Ability
         get
         {
             if (Verb?.PrimaryWeaponVerbProps == null)
+            {
                 return false;
+            }
 
             return !Verb.PrimaryWeaponVerbProps.IsMeleeAttack;
         }

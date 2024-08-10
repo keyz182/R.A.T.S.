@@ -24,34 +24,25 @@ public class JobDriver_AttackHybrid : JobDriver
     public bool TryStartAttack(LocalTargetInfo targ)
     {
         if (pawn.stances.FullBodyBusy || pawn.WorkTagIsDisabled(WorkTags.Violent))
+        {
             return false;
+        }
+
         bool allowManualCastWeapons = !pawn.IsColonist;
         Verb attackVerb = pawn.TryGetAttackVerb(targ.Thing, allowManualCastWeapons);
 
-        bool shootLineFromTo = attackVerb.TryFindShootLineFromTo(
-            TargetThingA.Position,
-            TargetThingB.Position,
-            out ShootLine resultingLine
-        );
-        if (
-            !RATS_GameComponent.ActiveAttacks.TryGetValue(
-                pawn,
-                out RATS_GameComponent.RATSAction attack
-            )
-        )
+        bool shootLineFromTo = attackVerb.TryFindShootLineFromTo(TargetThingA.Position, TargetThingB.Position, out ShootLine resultingLine);
+        if (!RATS_GameComponent.ActiveAttacks.TryGetValue(pawn, out RATS_GameComponent.RATSAction attack))
+        {
             return false;
+        }
 
         ThingDef projectileDef = attackVerb.GetProjectile();
-        Projectile projectile = (Projectile)
-            GenSpawn.Spawn(projectileDef, resultingLine.Source, TargetThingA.Map);
+        Projectile projectile = (Projectile)GenSpawn.Spawn(projectileDef, resultingLine.Source, TargetThingA.Map);
 
         if (RATSMod.Settings.EnableZoom)
         {
-            Thing zoomer = GenSpawn.Spawn(
-                RATS_DefOf.RATS_Zoomer,
-                resultingLine.Source,
-                TargetThingA.Map
-            );
+            Thing zoomer = GenSpawn.Spawn(RATS_DefOf.RATS_Zoomer, resultingLine.Source, TargetThingA.Map);
 
             ((Graphic_Zoomer)zoomer.Graphic).Parent = projectile;
         }
@@ -59,9 +50,7 @@ public class JobDriver_AttackHybrid : JobDriver
         LocalTargetInfo hitTarget = null;
         if (!Rand.Chance(attack.HitChance))
         {
-            Log.Message(
-                $"RATS attack Missed to {attack.Target} on {attack.Part} with hit chance {attack.HitChance}"
-            );
+            Log.Message($"RATS attack Missed to {attack.Target} on {attack.Part} with hit chance {attack.HitChance}");
 
             int missDir = Rand.Range(0, 7);
 
@@ -74,53 +63,77 @@ public class JobDriver_AttackHybrid : JobDriver
                     tgt = TargetB.Cell;
                     tgt.x += 1;
                     if (tgt.InBounds(pawn.Map))
+                    {
                         break;
+                    }
+
                     goto case 1;
                 case 1:
                     tgt = TargetB.Cell;
                     tgt.x += 1;
                     tgt.z += 1;
                     if (tgt.InBounds(pawn.Map))
+                    {
                         break;
+                    }
+
                     goto case 2;
                 case 2:
                     tgt = TargetB.Cell;
                     tgt.z += 1;
                     if (tgt.InBounds(pawn.Map))
+                    {
                         break;
+                    }
+
                     goto case 3;
                 case 3:
                     tgt = TargetB.Cell;
                     tgt.x -= 1;
                     tgt.z += 1;
                     if (tgt.InBounds(pawn.Map))
+                    {
                         break;
+                    }
+
                     goto case 4;
                 case 4:
                     tgt = TargetB.Cell;
                     tgt.x -= 1;
                     if (tgt.InBounds(pawn.Map))
+                    {
                         break;
+                    }
+
                     goto case 5;
                 case 5:
                     tgt = TargetB.Cell;
                     tgt.x -= 1;
                     tgt.z -= 1;
                     if (tgt.InBounds(pawn.Map))
+                    {
                         break;
+                    }
+
                     goto case 6;
                 case 6:
                     tgt = TargetB.Cell;
                     tgt.z -= 1;
                     if (tgt.InBounds(pawn.Map))
+                    {
                         break;
+                    }
+
                     goto case 7;
                 case 7:
                     tgt = TargetB.Cell;
                     tgt.x += 1;
                     tgt.z -= 1;
                     if (tgt.InBounds(pawn.Map))
+                    {
                         break;
+                    }
+
                     tgt = pawn.Map.cellIndices.IndexToCell(0);
                     break;
             }
@@ -129,23 +142,13 @@ public class JobDriver_AttackHybrid : JobDriver
         }
         else
         {
-            Log.Message(
-                $"RATS attack Hit to {attack.Target} on {attack.Part} with hit chance {attack.HitChance}"
-            );
+            Log.Message($"RATS attack Hit to {attack.Target} on {attack.Part} with hit chance {attack.HitChance}");
             hitTarget = TargetB;
         }
 
         // RATS_GameComponent.SetSlowMo(projectile);
 
-        projectile.Launch(
-            pawn,
-            pawn.DrawPos,
-            hitTarget,
-            TargetB,
-            ProjectileHitFlags.IntendedTarget,
-            false,
-            attack.Equipment
-        );
+        projectile.Launch(pawn, pawn.DrawPos, hitTarget, TargetB, ProjectileHitFlags.IntendedTarget, false, attack.Equipment);
         return true;
     }
 
@@ -156,7 +159,10 @@ public class JobDriver_AttackHybrid : JobDriver
         initToil.initAction = () =>
         {
             if (TargetThingA is Pawn targetThingA2)
+            {
                 startedIncapacitated = targetThingA2.Downed;
+            }
+
             pawn.pather.StopDead();
         };
         initToil.tickAction = () =>
@@ -170,11 +176,7 @@ public class JobDriver_AttackHybrid : JobDriver
                 if (TargetA.HasThing)
                 {
                     Pawn thing = TargetA.Thing as Pawn;
-                    if (
-                        TargetA.Thing.Destroyed
-                        || (thing != null && !startedIncapacitated && thing.Downed)
-                        || (thing != null && thing.IsPsychologicallyInvisible())
-                    )
+                    if (TargetA.Thing.Destroyed || (thing != null && !startedIncapacitated && thing.Downed) || (thing != null && thing.IsPsychologicallyInvisible()))
                     {
                         EndJobWith(JobCondition.Succeeded);
                         return;
@@ -192,22 +194,22 @@ public class JobDriver_AttackHybrid : JobDriver
                 else
                 {
                     if (pawn.stances.FullBodyBusy)
+                    {
                         return;
+                    }
+
                     Verb attackVerb = pawn.TryGetAttackVerb(TargetA.Thing, !pawn.IsColonist);
-                    if (
-                        job.endIfCantShootTargetFromCurPos
-                        && (
-                            attackVerb == null
-                            || !attackVerb.CanHitTargetFrom(pawn.Position, TargetA)
-                        )
-                    )
+                    if (job.endIfCantShootTargetFromCurPos && (attackVerb == null || !attackVerb.CanHitTargetFrom(pawn.Position, TargetA)))
                     {
                         EndJobWith(JobCondition.Incompletable);
                     }
                     else
                     {
                         if (!job.endIfCantShootInMelee)
+                        {
                             return;
+                        }
+
                         if (attackVerb == null)
                         {
                             EndJobWith(JobCondition.Incompletable);
@@ -219,12 +221,18 @@ public class JobDriver_AttackHybrid : JobDriver
                             LocalTargetInfo targetA = TargetA;
                             IntVec3 cell1 = targetA.Cell;
                             if (position1.DistanceToSquared(cell1) >= num * (double)num)
+                            {
                                 return;
+                            }
+
                             IntVec3 position2 = pawn.Position;
                             targetA = TargetA;
                             IntVec3 cell2 = targetA.Cell;
                             if (!position2.AdjacentTo8WayOrInside(cell2))
+                            {
                                 return;
+                            }
+
                             EndJobWith(JobCondition.Incompletable);
                         }
                     }

@@ -17,9 +17,13 @@ public class Thing_Zoomer : ThingWithComps
         base.Tick();
 
         if (startTicks < 0)
+        {
             return;
+        }
 
         if (startTicks + RATSMod.Settings.ZoomTimeout < Find.TickManager.TicksGame)
+        {
             Destroy();
+        }
     }
 }

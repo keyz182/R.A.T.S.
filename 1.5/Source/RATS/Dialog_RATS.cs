@@ -6,23 +6,19 @@ using Verse;
 
 namespace RATS;
 
-public class Dialog_RATS(
-    Verb_AbilityRats verb,
-    LocalTargetInfo target,
-    IWindowDrawing customWindowDrawing = null
-) : Window(customWindowDrawing)
+public class Dialog_RATS(Verb_AbilityRats verb, LocalTargetInfo target, IWindowDrawing customWindowDrawing = null) : Window(customWindowDrawing)
 {
     private readonly Color ButtonTextColour = new Color(0.357f, 0.825f, 0.278f);
 
     private readonly Texture2D Logo = ContentFinder<Texture2D>.Get("UI/RATS_Logo-Small");
 
-    public Dictionary<string, float> MultiplierLookup => RATSMod.Settings.MultiplierLookup;
+    private readonly Verb_AbilityRats verb = verb;
 
     public Verb Selected;
     private LocalTargetInfo target = target;
     private string title = "R.A.T.S.";
 
-    private readonly Verb_AbilityRats verb = verb;
+    public Dictionary<string, float> MultiplierLookup => RATSMod.Settings.MultiplierLookup;
 
     public override Vector2 InitialSize => new Vector2(845f, 740f);
     protected virtual Vector2 ButtonSize => new Vector2(200f, 40f);
@@ -45,13 +41,13 @@ public class Dialog_RATS(
         //     10f
         // );
         RectDivider rectDivider3 = rectDivider1.NewCol(ButtonSize.x);
-        RectDivider rectDivider4 = rectDivider1.NewCol(
-            rectDivider1.Rect.width,
-            HorizontalJustification.Right
-        );
+        RectDivider rectDivider4 = rectDivider1.NewCol(rectDivider1.Rect.width, HorizontalJustification.Right);
 
         if (Widgets.ButtonText(rectDivider3, CancelButtonLabel))
+        {
             Cancel();
+        }
+
         Widgets.Label(rectDivider4, WarningText);
     }
 
@@ -60,9 +56,7 @@ public class Dialog_RATS(
         ShotReport shotReport = verb.GetShotReport();
 
         // Calculate the multiplier, 1 + the sum of level*multiplier over the range 0 - shooting level
-        float pawnMultiplier = RATSMod.Settings.GetClampedValue(
-            verb.CasterPawn.skills.GetSkill(SkillDefOf.Shooting).Level
-        );
+        float pawnMultiplier = RATSMod.Settings.GetClampedValue(verb.CasterPawn.skills.GetSkill(SkillDefOf.Shooting).Level);
 
         float esitmatedHitChance = shotReport.TotalEstimatedHitChance;
         esitmatedHitChance = Mathf.Clamp01(esitmatedHitChance * pawnMultiplier);
@@ -73,9 +67,7 @@ public class Dialog_RATS(
             {
                 List<BodyPartRecord> parts = target
                     .Pawn.health.hediffSet.GetNotMissingParts()
-                    .Where(p =>
-                        p.def == BodyPartDefOf.Torso || p.parent?.def == BodyPartDefOf.Torso
-                    )
+                    .Where(p => p.def == BodyPartDefOf.Torso || p.parent?.def == BodyPartDefOf.Torso)
                     .Where(p => p.coverageAbs > 0.0)
                     .ToList();
 
@@ -106,24 +98,16 @@ public class Dialog_RATS(
                 for (int i = 0; i < partCount; i++)
                 {
                     RectDivider rectDivider;
-                    rectDivider =
-                        i <= partCount / 2
-                            ? colLeft.NewRow(45f, marginOverride: 5f)
-                            : colRight.NewRow(45f, marginOverride: 5f);
+                    rectDivider = i <= partCount / 2 ? colLeft.NewRow(45f, marginOverride: 5f) : colRight.NewRow(45f, marginOverride: 5f);
 
                     float partAccuracy = esitmatedHitChance * GetPartMultiplier(parts[i].def);
                     int partAccuracyPct = Mathf.CeilToInt(partAccuracy * 100);
 
-                    if (
-                        !Widgets.ButtonText(
-                            rectDivider,
-                            $"{parts[i].LabelCap} [{partAccuracyPct}%]",
-                            false,
-                            true,
-                            ButtonTextColour
-                        )
-                    )
+                    if (!Widgets.ButtonText(rectDivider, $"{parts[i].LabelCap} [{partAccuracyPct}%]", false, true, ButtonTextColour))
+                    {
                         continue;
+                    }
+
                     verb.RATS_Selection(target, parts[i], partAccuracy, shotReport);
                     Find.TickManager.CurTimeSpeed = TimeSpeed.Normal;
                     Close();

@@ -21,13 +21,7 @@ public class Graphic_Zoomer : Graphic_Single
         return RATS_Shaders.ZoomMat;
     }
 
-    public override void DrawWorker(
-        Vector3 loc,
-        Rot4 rot,
-        ThingDef thingDef,
-        Thing thing,
-        float extraRotation
-    )
+    public override void DrawWorker(Vector3 loc, Rot4 rot, ThingDef thingDef, Thing thing, float extraRotation)
     {
         if (Parent != null)
         {

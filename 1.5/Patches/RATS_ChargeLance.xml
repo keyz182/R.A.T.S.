@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    
+    <!-- add comps field to Gun_ChargeLance if it doesn't exist -->
+    <Operation Class="PatchOperationConditional">
+        <xpath>Defs/ThingDef[defName="Gun_ChargeLance"]/comps</xpath>
+        <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="Gun_ChargeLance"]</xpath>
+            <value>
+                <comps />
+            </value>
+        </nomatch>
+    </Operation>
+
+    <!-- add ratslink comp to Gun_ChargeLance -->
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="Gun_ChargeLance"]/comps</xpath>
+        <value>
+            <li Class="RATS.CompProperties_TemporaryHediff_Apparel">
+                <hediff>RATS_RatsLink</hediff>
+                <part>Head</part>
+                <projectRequired>RATS_RATS</projectRequired>
+            </li>
+        </value>
+    </Operation>
+</Patch>
