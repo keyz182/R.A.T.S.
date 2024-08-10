@@ -1,6 +1,6 @@
-# Homebound - A Rimsential Mod
+# R.A.T.S. - A Rimworld Mod
 
-Thank you for your interest in contributing to the Homebound, a Rimsential mod. This project is very open to
+Thank you for your interest in contributing to the R.A.T.S. mod. This project is very open to
 contributions,
 from people of all skill levels and backgrounds.
 
@@ -79,8 +79,7 @@ representative at an online or offline event.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the community leaders responsible for enforcement via emailing The Modding Community Managers
-at `feldoh-mod-community 'at' outlook.com`.
+reported to the community leaders responsible for enforcement via the issues tab.
 All complaints will be reviewed and investigated promptly and fairly.
 
 All community leaders are obligated to respect the privacy and security of the
