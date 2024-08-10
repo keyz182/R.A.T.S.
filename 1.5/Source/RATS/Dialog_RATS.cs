@@ -35,11 +35,6 @@ public class Dialog_RATS(Verb_AbilityRats verb, LocalTargetInfo target, IWindowD
     public virtual void DoButtonRow(ref RectDivider layout)
     {
         RectDivider rectDivider1 = layout.NewRow(ButtonSize.y, VerticalJustification.Bottom, 0.0f);
-        // RectDivider rectDivider2 = rectDivider1.NewCol(
-        //     ButtonSize.x,
-        //     HorizontalJustification.Right,
-        //     10f
-        // );
         RectDivider rectDivider3 = rectDivider1.NewCol(ButtonSize.x);
         RectDivider rectDivider4 = rectDivider1.NewCol(rectDivider1.Rect.width, HorizontalJustification.Right);
 
@@ -67,7 +62,7 @@ public class Dialog_RATS(Verb_AbilityRats verb, LocalTargetInfo target, IWindowD
             {
                 List<BodyPartRecord> parts = target
                     .Pawn.health.hediffSet.GetNotMissingParts()
-                    .Where(p => p.def == BodyPartDefOf.Torso || p.parent?.def == BodyPartDefOf.Torso)
+                    .Where(p => p.def == target.Pawn.def.race.body.corePart.def || p.parent?.def == target.Pawn.def.race.body.corePart.def)
                     .Where(p => p.coverageAbs > 0.0)
                     .ToList();
 

@@ -33,8 +33,9 @@
                 <canTargetAnimals>true</canTargetAnimals>
                 <canTargetMechs>true</canTargetMechs>
                 <canTargetMutants>true</canTargetMutants>
-                <onlyTargetColonistsOrPrisonersOrSlaves>true</onlyTargetColonistsOrPrisonersOrSlaves>
+                <canTargetPlants>false</canTargetPlants>
                 <canTargetBuildings>false</canTargetBuildings>
+                <canTargetCorpses>false</canTargetCorpses>
             </targetParams>
         </verbProperties>
         <comps>
