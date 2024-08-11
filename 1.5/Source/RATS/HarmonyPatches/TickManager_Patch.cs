@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using Verse;
 
-namespace RATS;
+namespace RATS.HarmonyPatches;
 
 [HarmonyPatch(typeof(TickManager))]
 [HarmonyPatch("TickRateMultiplier", MethodType.Getter)]

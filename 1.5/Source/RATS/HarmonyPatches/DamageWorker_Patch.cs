@@ -3,7 +3,7 @@ using System.Reflection;
 using HarmonyLib;
 using Verse;
 
-namespace RATS;
+namespace RATS.HarmonyPatches;
 
 [HarmonyPatch(typeof(DamageWorker_AddInjury))]
 public static class DamageWorker_Patch
@@ -12,7 +12,7 @@ public static class DamageWorker_Patch
     [HarmonyPatch("ApplyToPawn")]
     public static bool ApplyToPawn_Patch(ref DamageInfo dinfo, Pawn pawn)
     {
-        if (!RATS_GameComponent.ActiveAttacks.TryGetValue((Pawn)dinfo.Instigator, out RATS_GameComponent.RATSAction attack) || attack.Target != pawn)
+        if (dinfo.Instigator is not Pawn instigator || !RATS_GameComponent.ActiveAttacks.TryGetValue(instigator, out RATS_GameComponent.RATSAction attack) || attack.Target != pawn)
         {
             return true;
         }

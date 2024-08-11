@@ -19,8 +19,8 @@
         <OutputPath>../../Assemblies/</OutputPath>
         <ZipFilePath>../../../$(AssemblyName).zip</ZipFilePath>
         <ReleasePath>../../../Release</ReleasePath>
-        <AssemblyVersion>1.0.1</AssemblyVersion>
-        <FileVersion>1.0.1</FileVersion>
+        <AssemblyVersion>1.0.3</AssemblyVersion>
+        <FileVersion>1.0.3</FileVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

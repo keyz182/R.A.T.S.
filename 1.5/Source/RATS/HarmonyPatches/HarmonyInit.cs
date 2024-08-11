@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using Verse;
 
-namespace RATS;
+namespace RATS.HarmonyPatches;
 
 [StaticConstructorOnStartup]
 public static class HarmonyInit

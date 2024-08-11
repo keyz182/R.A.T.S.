@@ -95,7 +95,7 @@ public class Dialog_RATS(Verb_AbilityRats verb, LocalTargetInfo target, IWindowD
                     RectDivider rectDivider;
                     rectDivider = i <= partCount / 2 ? colLeft.NewRow(45f, marginOverride: 5f) : colRight.NewRow(45f, marginOverride: 5f);
 
-                    float partAccuracy = esitmatedHitChance * GetPartMultiplier(parts[i].def);
+                    float partAccuracy = esitmatedHitChance * GetPartMultiplier(parts[i].def) + RATSMod.Settings.FlatHitChanceBoost;
                     int partAccuracyPct = Mathf.CeilToInt(partAccuracy * 100);
 
                     if (!Widgets.ButtonText(rectDivider, $"{parts[i].LabelCap} [{partAccuracyPct}%]", false, true, ButtonTextColour))

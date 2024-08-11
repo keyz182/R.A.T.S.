@@ -7,6 +7,7 @@ namespace RATS;
 
 public class RATS_Settings : ModSettings
 {
+    public float FlatHitChanceBoost = 0.2f;
     public float ClampingFactor = 0.5f;
     public int CooldownTicks = 600;
     public bool EnableSlowDownTime = true;
@@ -66,7 +67,7 @@ public class RATS_Settings : ModSettings
     {
         PopulateMissingMultipliers();
         int multiplierHeight = MultiplierLookup.Count * 56;
-        int restHeight = 388;
+        int restHeight = 388 + 64;
         float scrollViewHeight = multiplierHeight + restHeight; // Adjust this value as needed
         Rect viewRect = new Rect(0, 0, wrect.width - 20, scrollViewHeight);
         scrollPosition = GUI.BeginScrollView(new Rect(0, 50, wrect.width, wrect.height - 50), scrollPosition, viewRect);
@@ -81,11 +82,19 @@ public class RATS_Settings : ModSettings
                 EnableZoom = true;
                 ZoomTimeout = 150;
                 CooldownTicks = 600;
+                FlatHitChanceBoost = 0.2f;
                 GainPerLevel = 0.15f;
                 ClampingFactor = 0.15f;
                 ResetMultipliers();
             }
 
+            //12
+            options.Gap();
+
+            //22
+            options.Label("RATS_Settings_FlatHitChanceBoost".Translate(FlatHitChanceBoost.ToString("F5")), tooltip: "RATS_Settings_FlatHitChanceBoost_Mouseover".Translate());
+            //30
+            FlatHitChanceBoost = options.Slider(FlatHitChanceBoost, 0f, 1f);
             //12
             options.Gap();
 
@@ -162,6 +171,7 @@ public class RATS_Settings : ModSettings
         Scribe_Values.Look(ref EnableZoom, "EnableZoom", true);
         Scribe_Values.Look(ref ZoomTimeout, "ZoomTimeout", 150);
         Scribe_Values.Look(ref CooldownTicks, "CooldownTicks", 150);
+        Scribe_Values.Look(ref FlatHitChanceBoost, "FlatHitChanceBoost", 0.15f);
         Scribe_Values.Look(ref GainPerLevel, "GainPerLevel", 0.15f);
         Scribe_Values.Look(ref ClampingFactor, "ClampingFactor", 0.15f);
         Scribe_Collections.Look(ref MultiplierLookup, "MultiplierLookup", LookMode.Value, LookMode.Value);
