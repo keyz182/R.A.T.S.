@@ -6,10 +6,6 @@
 
 # R.A.T.S. - RimTech Assisted Targeting System
 
-Here's a quick summary of your Rimworld mod, R.A.T.S.:
-
-**R.A.T.S. (Rimtech Assisted Targeting System)**
-
 Inspired by the iconic VATS system from the Fallout series, R.A.T.S. brings a new layer of tactical depth to Rimworld
 combat. This mod allows your colonists to temporarily slow down time, carefully analyze their enemies, and target
 specific body parts with precision strikes. With R.A.T.S., every shot counts, offering a thrilling blend of strategy and
