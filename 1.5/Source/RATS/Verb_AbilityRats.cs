@@ -38,15 +38,8 @@ public class Verb_AbilityRats : Verb_AbilityShoot
 
         job.maxNumMeleeAttacks = 1;
         job.maxNumStaticAttacks = 1;
-        string uniqueLoadId = CalculateUniqueLoadID(PrimaryWeaponEq, tool, maneuver);
-        Verb verb = (Verb)Activator.CreateInstance(PrimaryWeaponVerbProps.verbClass);
-        PrimaryWeaponEq.verbTracker.AllVerbs.Add(verb);
-        verb.loadID = uniqueLoadId;
-        verb.verbProps = PrimaryWeaponVerbProps;
-        verb.verbTracker = PrimaryWeaponEq.verbTracker;
-        verb.tool = tool;
-        verb.maneuver = maneuver;
-        verb.caster = caster;
+
+        Verb verb = PrimaryWeaponEq.verbTracker.PrimaryVerb;
 
         job.verbToUse = verb;
         job.targetA = caster;
