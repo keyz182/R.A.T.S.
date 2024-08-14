@@ -8,13 +8,14 @@
         <baseCost>2000</baseCost>
         <techLevel>Industrial</techLevel>
         <prerequisites>
-            <li>Fabrication</li>
+            <li>AdvancedFabrication</li>
+            <li>Gunlink</li>
         </prerequisites>
         <requiredResearchFacilities>
             <li>MultiAnalyzer</li>
         </requiredResearchFacilities>
         <requiredResearchBuilding>HiTechResearchBench</requiredResearchBuilding>
-        <researchViewX>15.00</researchViewX>
-        <researchViewY>5</researchViewY>
+        <researchViewX>17.00</researchViewX>
+        <researchViewY>5.4</researchViewY>
     </ResearchProjectDef>
 </Defs>
