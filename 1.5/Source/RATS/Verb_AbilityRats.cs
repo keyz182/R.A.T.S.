@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using HarmonyLib;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -79,8 +79,27 @@ public class Verb_AbilityRats : Verb_AbilityShoot
         return true;
     }
 
-    public ShotReport GetShotReport()
+    public ShotReport GetShotReport(LocalTargetInfo targetInfo)
     {
-        return ShotReport.HitReportFor(caster, this, currentTarget);
+        return ShotReport.HitReportFor(caster, PrimaryWeaponEq.verbTracker.PrimaryVerb, targetInfo);
+    }
+
+    public override void OnGUI(LocalTargetInfo target)
+    {
+        CellRect occupiedRect = target.HasThing ? target.Thing.OccupiedRect() : CellRect.SingleCell(target.Cell);
+        bool cannotShoot = !target.IsValid || OutOfRange(caster.Position, target, occupiedRect);
+        Texture2D attachment = cannotShoot
+            ? TexCommand.CannotShoot
+            : !(UIIcon != BaseContent.BadTex)
+                ? TexCommand.Attack
+                : UIIcon;
+
+        GenUI.DrawMouseAttachment(attachment);
+    }
+
+    public override bool ValidateTarget(LocalTargetInfo target, bool showMessages = true)
+    {
+        CellRect occupiedRect = target.HasThing ? target.Thing.OccupiedRect() : CellRect.SingleCell(target.Cell);
+        return !OutOfRange(caster.Position, target, occupiedRect) && base.ValidateTarget(target, showMessages);
     }
 }

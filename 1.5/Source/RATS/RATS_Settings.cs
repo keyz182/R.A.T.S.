@@ -8,17 +8,13 @@ namespace RATS;
 public class RATS_Settings : ModSettings
 {
     public float FlatHitChanceBoost = 0.2f;
-    public float ClampingFactor = 0.5f;
     public int CooldownTicks = 600;
     public bool EnableSlowDownTime = true;
     public bool EnableZoom = true;
-    public float GainPerLevel = 0.15f;
 
     public Dictionary<string, float> MultiplierLookup = new Dictionary<string, float>();
     public Vector2 scrollPosition = Vector2.zero;
     public int ZoomTimeout = 150;
-
-    public float MaxGain => 1f + Enumerable.Range(0, 20).Sum(i => i == 0 ? 0 : Mathf.Pow(RATSMod.Settings.GainPerLevel, i));
 
     public void ResetMultipliers()
     {
@@ -53,21 +49,11 @@ public class RATS_Settings : ModSettings
         }
     }
 
-    public float GetClampedValue(int level)
-    {
-        return MaxGain / ClampingFactor * GetScaledValue(level);
-    }
-
-    public float GetScaledValue(int level)
-    {
-        return Enumerable.Range(0, level).Sum(i => i == 0 ? 0 : Mathf.Pow(RATSMod.Settings.GainPerLevel, i));
-    }
-
     public void DoWindowContents(Rect wrect)
     {
         PopulateMissingMultipliers();
         int multiplierHeight = MultiplierLookup.Count * 56;
-        int restHeight = 388 + 64;
+        int restHeight = 248 + 64;
         float scrollViewHeight = multiplierHeight + restHeight; // Adjust this value as needed
         Rect viewRect = new Rect(0, 0, wrect.width - 20, scrollViewHeight);
         scrollPosition = GUI.BeginScrollView(new Rect(0, 50, wrect.width, wrect.height - 50), scrollPosition, viewRect);
@@ -83,8 +69,6 @@ public class RATS_Settings : ModSettings
                 ZoomTimeout = 150;
                 CooldownTicks = 600;
                 FlatHitChanceBoost = 0.2f;
-                GainPerLevel = 0.15f;
-                ClampingFactor = 0.15f;
                 ResetMultipliers();
             }
 
@@ -119,20 +103,6 @@ public class RATS_Settings : ModSettings
             options.Label("RATS_Settings_CooldownTicks".Translate(CooldownTicks));
             //22
             options.IntAdjuster(ref CooldownTicks, 1, 60);
-            //12
-            options.Gap();
-
-            //22
-            options.Label("RATS_Settings_Gain_Per_Level".Translate(GainPerLevel.ToString("F5")), tooltip: "RATS_Settings_Gain_Per_Level_Mouseover".Translate());
-            //30
-            GainPerLevel = options.Slider(GainPerLevel, 0.01f, 4f);
-            //12
-            options.Gap();
-
-            //22
-            options.Label("RATS_Settings_ClampingFactor".Translate(ClampingFactor.ToString("F5")), tooltip: "RATS_Settings_ClampingFactor".Translate());
-            //30
-            ClampingFactor = options.Slider(ClampingFactor, 0.01f, 2f);
             //12
             options.Gap();
 
@@ -172,8 +142,6 @@ public class RATS_Settings : ModSettings
         Scribe_Values.Look(ref ZoomTimeout, "ZoomTimeout", 150);
         Scribe_Values.Look(ref CooldownTicks, "CooldownTicks", 150);
         Scribe_Values.Look(ref FlatHitChanceBoost, "FlatHitChanceBoost", 0.15f);
-        Scribe_Values.Look(ref GainPerLevel, "GainPerLevel", 0.15f);
-        Scribe_Values.Look(ref ClampingFactor, "ClampingFactor", 0.15f);
         Scribe_Collections.Look(ref MultiplierLookup, "MultiplierLookup", LookMode.Value, LookMode.Value);
     }
 }
