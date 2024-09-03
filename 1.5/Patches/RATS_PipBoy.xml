@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!-- add comps field to BionicEye if it doesn't exist -->
+    <Operation Class="PatchOperationFindMod">
+        <mods>
+            <li>Vault-Tec - Handy things for your vault!</li>
+        </mods>
+        <match Class="PatchOperationConditional">
+            <xpath>Defs/ThingDef[defName="PipBoy"]/comps</xpath>
+            <nomatch Class="PatchOperationAdd">
+                <xpath>Defs/ThingDef[defName="PipBoy"]</xpath>
+                <value>
+                    <comps />
+                </value>
+            </nomatch>
+        </match>
+    </Operation>
+    
+    <!-- add ratslink comp to BionicEye -->
+    <Operation Class="PatchOperationFindMod">
+        <mods>
+            <li>Vault-Tec - Handy things for your vault!</li>
+        </mods>
+        <match Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="PipBoy"]/comps</xpath>
+            <value>
+                <li Class="RATS.CompProperties_TemporaryHediff_Apparel">
+                    <hediff>RATS_RatsLink</hediff>
+                    <part>Head</part>
+                </li>
+            </value>
+        </match>
+    </Operation>
+</Patch>
