@@ -14,4 +14,5 @@
     <RATS_Settings_ClampingFactor_Mouseover>Clamps the max accuracy boost, and scales appropriately</RATS_Settings_ClampingFactor_Mouseover>
     <RATS_Settings_Reset>Reset</RATS_Settings_Reset>
     <RATS_CommandAttackWithRats>Attack with R.A.T.S.</RATS_CommandAttackWithRats>
+    <RATS_LegendaryStats>Legendary effects:</RATS_LegendaryStats>
 </LanguageData>

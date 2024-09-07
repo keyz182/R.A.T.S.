@@ -10,4 +10,6 @@ public static class RATS_DefOf
     public static ThingDef RATS_RATSLink;
     public static JobDef RATS_AttackHybrid;
     public static ThingDef RATS_Zoomer;
+    public static StatCategoryDef RATS_LegendaryEffectStats;
+    public static StatCategoryDef Rats_LegendaryEffect_StatCat;
 }
