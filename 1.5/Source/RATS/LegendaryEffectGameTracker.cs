@@ -21,7 +21,27 @@ public class LegendaryEffectGameTracker : GameComponent
     public static void AddNewLegendaryEffectFor(Thing thing)
     {
         List<LegendaryEffectDef> AllDefs = DefDatabase<LegendaryEffectDef>.AllDefsListForReading;
-        LegendaryEffectDef effect = AllDefs.Where(def => def.IsForApparel == thing.def.IsApparel || def.IsForWeapon == thing.def.IsWeapon).RandomElement();
+        LegendaryEffectDef effect;
+
+        if (thing.def.IsApparel)
+        {
+            effect = AllDefs.Where(def => def.IsForApparel).RandomElement();
+        }
+        else if (thing.def.IsWeapon)
+        {
+            if (thing.def.weaponClasses.Any(cls => cls.defName.ToLower().Contains("melee")))
+            {
+                effect = AllDefs.Where(def => def.IsForWeapon && def.IsForMelee).RandomElement();
+            }
+            else
+            {
+                effect = AllDefs.Where(def => def.IsForWeapon && !def.IsForMelee).RandomElement();
+            }
+        }
+        else
+        {
+            return;
+        }
 
         if (!EffectsDict.TryGetValue(thing, out var effects))
             effects = new List<LegendaryEffectDef>();
