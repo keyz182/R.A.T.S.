@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using RimWorld;
 using Verse;
 
@@ -7,6 +9,29 @@ namespace RATS;
 public class LegendaryStatDrawEntry : StatDrawEntry
 {
     private LegendaryEffectDef LegendaryEffect;
+
+    public LegendaryStatDrawEntry(
+        LegendaryEffectDef legendaryEffectDef,
+        StatCategoryDef category,
+        StatDef stat,
+        float value,
+        StatRequest optionalReq,
+        ToStringNumberSense numberSense = ToStringNumberSense.Undefined,
+        int? overrideDisplayPriorityWithinCategory = null,
+        bool forceUnfinalizedMode = false,
+        IEnumerable<Dialog_InfoCard.Hyperlink> hyperlinks = null
+    )
+        : base(category, stat, value, optionalReq, numberSense, overrideDisplayPriorityWithinCategory, forceUnfinalizedMode)
+    {
+        LegendaryEffect = legendaryEffectDef;
+
+        Type dType = typeof(StatDrawEntry);
+        FieldInfo hlField = dType.GetField("hyperlinks", BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+        if (hlField != null)
+        {
+            hlField.SetValue(this, hyperlinks);
+        }
+    }
 
     public LegendaryStatDrawEntry(
         LegendaryEffectDef legendaryEffectDef,

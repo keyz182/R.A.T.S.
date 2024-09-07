@@ -7,7 +7,7 @@ namespace RATS.LegendaryEffectWorkers;
 
 public class BloodiedWorker : LegendaryEffectWorker
 {
-    public override void ApplyToDamageInfo(ref DamageInfo damageInfo)
+    public override void ApplyEffect(ref DamageInfo damageInfo)
     {
         if (damageInfo.Instigator is Pawn pawn)
         {

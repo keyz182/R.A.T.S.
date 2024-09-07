@@ -98,6 +98,8 @@ public static class Thing_Patch
                     stringBuilder.AppendLine("StatsReport_FinalValue".Translate() + ": " + stat.ValueToString(val, ToStringNumberSense.Offset, !stat.formatString.NullOrEmpty()));
                 }
 
+                IEnumerable<Dialog_InfoCard.Hyperlink> hl = Gen.YieldSingle(new Dialog_InfoCard.Hyperlink(effectDef));
+
                 output.Add(
                     new LegendaryStatDrawEntry(
                         effectDef,
@@ -106,7 +108,8 @@ public static class Thing_Patch
                         statMod.value,
                         StatRequest.ForEmpty(),
                         ToStringNumberSense.Offset,
-                        forceUnfinalizedMode: true
+                        forceUnfinalizedMode: true,
+                        hyperlinks: hl
                     ).SetReportText(stringBuilder.ToString())
                 );
             }

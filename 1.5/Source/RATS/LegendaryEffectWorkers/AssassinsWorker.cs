@@ -6,7 +6,7 @@ namespace RATS.LegendaryEffectWorkers;
 
 public class AssassinsWorker : LegendaryEffectWorker
 {
-    public override void ApplyToDamageInfo(ref DamageInfo damageInfo)
+    public override void ApplyEffect(ref DamageInfo damageInfo)
     {
         if (damageInfo.IntendedTarget is Pawn pawn)
         {

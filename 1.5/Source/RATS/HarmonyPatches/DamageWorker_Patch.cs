@@ -32,7 +32,7 @@ public static class DamageWorker_Patch
 
         foreach (LegendaryEffectDef legendaryEffectDef in GetLegendaryEffectsFor(instigator))
         {
-            legendaryEffectDef.Worker.ApplyToDamageInfo(ref dinfo);
+            legendaryEffectDef.Worker.ApplyEffect(ref dinfo);
         }
         return true;
     }

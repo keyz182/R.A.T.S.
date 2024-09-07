@@ -32,15 +32,16 @@
         <IsForMelee>true</IsForMelee>
         <IsForApparel>false</IsForApparel>
     </RATS.LegendaryEffectDef>
-    <!--      -->
-    <!-- <RATS.LegendaryEffectDef> -->
-    <!--     <defName>Rats_LegendaryEffect_Crippling</defName> -->
-    <!--     <label>Crippling</label> -->
-    <!--     <description>Does more limb damage</description> -->
-    <!--     <IsForWeapon>true</IsForWeapon> -->
-    <!--     <IsForMelee>true</IsForMelee> -->
-    <!--     <IsForApparel>false</IsForApparel> -->
-    <!-- </RATS.LegendaryEffectDef> -->
+    
+    <RATS.LegendaryEffectDef>
+        <defName>Rats_LegendaryEffect_Crippling</defName>
+        <label>Crippling</label>
+        <description>Does more limb damage</description>
+        <workerClass>RATS.LegendaryEffectWorkers.CripplingWorker</workerClass>
+        <IsForWeapon>true</IsForWeapon>
+        <IsForMelee>true</IsForMelee>
+        <IsForApparel>false</IsForApparel>
+    </RATS.LegendaryEffectDef>
     <!--      -->
     <!-- <RATS.LegendaryEffectDef> -->
     <!--     <defName>Rats_LegendaryEffect_Enraging</defName> -->
@@ -50,33 +51,52 @@
     <!--     <IsForMelee>false</IsForMelee> -->
     <!--     <IsForApparel>true</IsForApparel> -->
     <!-- </RATS.LegendaryEffectDef> -->
-    <!--      -->
-    <!-- <RATS.LegendaryEffectDef> -->
-    <!--     <defName>Rats_LegendaryEffect_Explosive</defName> -->
-    <!--     <label>Explosive</label> -->
-    <!--     <description>Bullets explode on impact</description> -->
-    <!--     <IsForWeapon>true</IsForWeapon> -->
-    <!--     <IsForMelee>false</IsForMelee> -->
-    <!--     <IsForApparel>false</IsForApparel> -->
-    <!-- </RATS.LegendaryEffectDef> -->
-    <!--      -->
-    <!-- <RATS.LegendaryEffectDef> -->
-    <!--     <defName>Rats_LegendaryEffect_Incendiary</defName> -->
-    <!--     <label>Incendiary</label> -->
-    <!--     <description>Sets target on fire</description> -->
-    <!--     <IsForWeapon>true</IsForWeapon> -->
-    <!--     <IsForMelee>false</IsForMelee> -->
-    <!--     <IsForApparel>false</IsForApparel> -->
-    <!-- </RATS.LegendaryEffectDef> -->
-    <!--      -->
-    <!-- <RATS.LegendaryEffectDef> -->
-    <!--     <defName>Rats_LegendaryEffect_Instigating</defName> -->
-    <!--     <label>Instigating</label> -->
-    <!--     <description>Double damage if the target is full health</description> -->
-    <!--     <IsForWeapon>true</IsForWeapon> -->
-    <!--     <IsForMelee>true</IsForMelee> -->
-    <!--     <IsForApparel>false</IsForApparel> -->
-    <!-- </RATS.LegendaryEffectDef> -->
+    
+    <RATS.LegendaryEffectDef>
+        <defName>Rats_LegendaryEffect_Explosive</defName>
+        <label>Explosive</label>
+        <description>Bullets explode on impact</description>
+        <workerClass>RATS.LegendaryEffectWorkers.ExplosiveWorker</workerClass>
+        <IsForWeapon>true</IsForWeapon>
+        <IsForMelee>false</IsForMelee>
+        <IsForApparel>false</IsForApparel>
+    </RATS.LegendaryEffectDef>
+    
+    <EffecterDef>
+        <defName>Rats_LegendaryEffect_Explosive_Explosion</defName>
+        <children>
+            <li>
+                <subEffecterClass>SubEffecter_SprayerTriggered</subEffecterClass>
+                <moteDef>Mote_GiantExplosion</moteDef>
+                <scale>0.2~0.2</scale>
+            </li>
+            <li>
+                <subEffecterClass>SubEffecter_SprayerTriggered</subEffecterClass>
+                <moteDef>Mote_GiantExplosionInner</moteDef>
+                <scale>1~1</scale>
+            </li>
+        </children>
+    </EffecterDef>
+    
+    <RATS.LegendaryEffectDef>
+        <defName>Rats_LegendaryEffect_Incendiary</defName>
+        <label>Incendiary</label>
+        <description>Sets target on fire</description>
+        <workerClass>RATS.LegendaryEffectWorkers.IncendiaryWorker</workerClass>
+        <IsForWeapon>true</IsForWeapon>
+        <IsForMelee>false</IsForMelee>
+        <IsForApparel>false</IsForApparel>
+    </RATS.LegendaryEffectDef>
+    
+    <RATS.LegendaryEffectDef>
+        <defName>Rats_LegendaryEffect_Instigating</defName>
+        <label>Instigating</label>
+        <description>Double damage if the target is full health</description>
+        <workerClass>RATS.LegendaryEffectWorkers.InstigatingWorker</workerClass>
+        <IsForWeapon>true</IsForWeapon>
+        <IsForMelee>true</IsForMelee>
+        <IsForApparel>false</IsForApparel>
+    </RATS.LegendaryEffectDef>
     
     <RATS.LegendaryEffectDef>
         <defName>Rats_LegendaryEffect_Junkies</defName>
@@ -129,11 +149,6 @@
         <defName>Rats_LegendaryEffect_Rapid</defName>
         <label>Rapid</label>
         <description>Boosts firing rate</description>
-        <StatModifiers>
-            <RangedCooldownFactor>-0.4</RangedCooldownFactor>
-            <AimingDelayFactor>-0.4</AimingDelayFactor>
-            <MeleeCooldownFactor>-0.4</MeleeCooldownFactor>
-        </StatModifiers>
         <IsForWeapon>true</IsForWeapon>
         <IsForApparel>true</IsForApparel>
     </RATS.LegendaryEffectDef>

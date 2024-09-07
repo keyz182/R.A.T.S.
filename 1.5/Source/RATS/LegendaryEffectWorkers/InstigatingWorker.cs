@@ -1,27 +1,22 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using Verse;
 
 namespace RATS.LegendaryEffectWorkers;
 
-public class JunkiesWorker : LegendaryEffectWorker
+public class InstigatingWorker : LegendaryEffectWorker
 {
     public override void ApplyEffect(ref DamageInfo damageInfo)
     {
-        if (damageInfo.Instigator is Pawn pawn)
+        if (damageInfo.IntendedTarget is Pawn pawn && Mathf.Approximately(pawn.health.summaryHealth.SummaryHealthPercent, 0f))
         {
-            int addictions = pawn.health.hediffSet.hediffs.Count(hediff => hediff.def.defName.ToLower().Contains("addict"));
-
-            float extraDamage = addictions * 0.15f + 1f;
-
             Type dType = typeof(DamageInfo);
             FieldInfo amountInt = dType.GetField("amountInt", BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
             if (amountInt != null)
             {
                 float damageAmount = (float)amountInt.GetValue(damageInfo);
-                amountInt.SetValueDirect(__makeref(damageInfo), damageAmount * extraDamage);
+                amountInt.SetValueDirect(__makeref(damageInfo), damageAmount * 2f);
             }
         }
     }
