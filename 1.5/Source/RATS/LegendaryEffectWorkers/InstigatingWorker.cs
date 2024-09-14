@@ -7,9 +7,9 @@ namespace RATS.LegendaryEffectWorkers;
 
 public class InstigatingWorker : LegendaryEffectWorker
 {
-    public override void ApplyEffect(ref DamageInfo damageInfo)
+    public override void ApplyEffect(ref DamageInfo damageInfo, Pawn pawn)
     {
-        if (damageInfo.IntendedTarget is Pawn pawn && Mathf.Approximately(pawn.health.summaryHealth.SummaryHealthPercent, 0f))
+        if (pawn != null && Mathf.Approximately(pawn.health.summaryHealth.SummaryHealthPercent, 0f))
         {
             Type dType = typeof(DamageInfo);
             FieldInfo amountInt = dType.GetField("amountInt", BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);

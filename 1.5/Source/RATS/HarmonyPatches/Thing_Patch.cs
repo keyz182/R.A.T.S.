@@ -117,4 +117,36 @@ public static class Thing_Patch
 
         __result = output.AsEnumerable();
     }
+
+    [HarmonyPatch(nameof(Thing.GetGizmos))]
+    [HarmonyPostfix]
+    public static void GetGizmos(Thing __instance, ref IEnumerable<Gizmo> __result)
+    {
+        List<Gizmo> gizmos = __result.ToList();
+
+        if (LegendaryEffectGameTracker.HasEffect(__instance) && DebugSettings.godMode)
+        {
+            Command_Action rerollEffect = new Command_Action();
+            rerollEffect.defaultLabel = "DEV: Reroll Legendary Effect";
+
+            rerollEffect.action = delegate
+            {
+                LegendaryEffectGameTracker.Reroll(__instance);
+            };
+
+            gizmos.Add(rerollEffect);
+
+            Command_Action changeEffect = new Command_Action();
+            changeEffect.defaultLabel = "DEV: Change Legendary Effect";
+
+            changeEffect.action = delegate
+            {
+                LegendaryEffectGameTracker.MakeChangeEffectFloatMenu(__instance);
+            };
+
+            gizmos.Add(changeEffect);
+        }
+
+        __result = gizmos.AsEnumerable();
+    }
 }

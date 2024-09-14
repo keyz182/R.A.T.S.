@@ -6,9 +6,9 @@ namespace RATS.LegendaryEffectWorkers;
 
 public class AssassinsWorker : LegendaryEffectWorker
 {
-    public override void ApplyEffect(ref DamageInfo damageInfo)
+    public override void ApplyEffect(ref DamageInfo damageInfo, Pawn pawn)
     {
-        if (damageInfo.IntendedTarget is Pawn pawn)
+        if (pawn != null)
         {
             Type dType = typeof(DamageInfo);
             FieldInfo amountInt = dType.GetField("amountInt", BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);

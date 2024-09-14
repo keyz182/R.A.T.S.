@@ -15,4 +15,6 @@
     <RATS_Settings_Reset>Reset</RATS_Settings_Reset>
     <RATS_CommandAttackWithRats>Attack with R.A.T.S.</RATS_CommandAttackWithRats>
     <RATS_LegendaryStats>Legendary effects:</RATS_LegendaryStats>
+    
+    <RATS_MessageReceivedDamageFromHediff>{PAWN_labelShort} has a crippled {1}.</RATS_MessageReceivedDamageFromHediff>
 </LanguageData>

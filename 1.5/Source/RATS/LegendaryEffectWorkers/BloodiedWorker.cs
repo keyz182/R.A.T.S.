@@ -7,9 +7,9 @@ namespace RATS.LegendaryEffectWorkers;
 
 public class BloodiedWorker : LegendaryEffectWorker
 {
-    public override void ApplyEffect(ref DamageInfo damageInfo)
+    public override void ApplyEffect(ref DamageInfo damageInfo, Pawn pawn)
     {
-        if (damageInfo.Instigator is Pawn pawn)
+        if (pawn != null)
         {
             float extraDamage = Math.Abs(20 - Mathf.Ceil(pawn.health.summaryHealth.SummaryHealthPercent * 20)) * 0.05f + 1f;
 

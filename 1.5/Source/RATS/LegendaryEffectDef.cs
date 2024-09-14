@@ -14,6 +14,7 @@ public class LegendaryEffectDef : Def
     public bool IsForMelee = false;
     public bool IsForApparel = false;
     public Type workerClass = typeof(LegendaryEffectWorker);
+    public HediffDef hediffToApply;
 
     [Unsaved(false)]
     private LegendaryEffectWorker workerInt;

@@ -5,9 +5,9 @@ namespace RATS.LegendaryEffectWorkers;
 
 public class IncendiaryWorker : LegendaryEffectWorker
 {
-    public override void ApplyEffect(ref DamageInfo damageInfo)
+    public override void ApplyEffect(ref DamageInfo damageInfo, Pawn pawn)
     {
-        if (damageInfo.IntendedTarget != null && damageInfo.IntendedTarget.CanEverAttachFire())
+        if (pawn != null && damageInfo.IntendedTarget.CanEverAttachFire())
         {
             damageInfo.IntendedTarget.TryAttachFire(2, damageInfo.Instigator);
         }

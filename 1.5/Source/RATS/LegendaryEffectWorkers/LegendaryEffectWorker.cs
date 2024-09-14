@@ -8,5 +8,5 @@ public class LegendaryEffectWorker
 
     public void InitSetEffect(LegendaryEffectDef newEffect) => this.effect = newEffect;
 
-    public virtual void ApplyEffect(ref DamageInfo damageInfo) { }
+    public virtual void ApplyEffect(ref DamageInfo damageInfo, Pawn pawn) { }
 }

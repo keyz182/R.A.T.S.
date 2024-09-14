@@ -6,7 +6,7 @@ namespace RATS.LegendaryEffectWorkers;
 
 public class CripplingWorker : LegendaryEffectWorker
 {
-    public override void ApplyEffect(ref DamageInfo damageInfo)
+    public override void ApplyEffect(ref DamageInfo damageInfo, Pawn pawn)
     {
         if (
             damageInfo.HitPart.def.defName.ToLower().Contains("arm")

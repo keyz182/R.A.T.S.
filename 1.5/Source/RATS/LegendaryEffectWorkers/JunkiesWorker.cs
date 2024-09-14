@@ -8,9 +8,9 @@ namespace RATS.LegendaryEffectWorkers;
 
 public class JunkiesWorker : LegendaryEffectWorker
 {
-    public override void ApplyEffect(ref DamageInfo damageInfo)
+    public override void ApplyEffect(ref DamageInfo damageInfo, Pawn pawn)
     {
-        if (damageInfo.Instigator is Pawn pawn)
+        if (pawn != null)
         {
             int addictions = pawn.health.hediffSet.hediffs.Count(hediff => hediff.def.defName.ToLower().Contains("addict"));
 

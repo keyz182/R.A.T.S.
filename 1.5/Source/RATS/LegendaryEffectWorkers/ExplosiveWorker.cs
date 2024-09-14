@@ -7,8 +7,10 @@ namespace RATS.LegendaryEffectWorkers;
 
 public class ExplosiveWorker : LegendaryEffectWorker
 {
-    public override void ApplyEffect(ref DamageInfo damageInfo)
+    public override void ApplyEffect(ref DamageInfo damageInfo, Pawn pawn)
     {
+        if (pawn == null)
+            return;
         Effecter eff = RATS_DefOf.Rats_LegendaryEffect_Explosive_Explosion.Spawn();
         damageInfo.Instigator.Map.effecterMaintainer.AddEffecterToMaintain(eff, damageInfo.IntendedTarget.Position.ToVector3().ToIntVec3(), 60);
 
