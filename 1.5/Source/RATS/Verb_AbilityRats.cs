@@ -53,7 +53,7 @@ public class Verb_AbilityRats : Verb_AbilityShoot
 
         RATS_GameComponent.ActiveAttacks.Add(CasterPawn, new RATS_GameComponent.RATSAction(currentTarget.Pawn, part, PrimaryWeapon, hitChance, shotReport));
 
-        ability.StartCooldown(ability.def.cooldownTicksRange.RandomInRange);
+        ability.StartCooldown(Mathf.CeilToInt(ability.def.cooldownTicksRange.RandomInRange * LegendaryEffectGameTracker.CooldownModifier(CasterPawn)));
 
         CasterPawn.jobs.TryTakeOrderedJob(job);
     }

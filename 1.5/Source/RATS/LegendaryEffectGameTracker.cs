@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using RimWorld;
 using Verse;
 
 namespace RATS;
@@ -64,6 +65,11 @@ public class LegendaryEffectGameTracker : GameComponent
     public static bool HasEffect(Thing thing)
     {
         return EffectsDict.ContainsKey(thing) && EffectsDict[thing].Count > 0;
+    }
+
+    public static List<LegendaryEffectDef> GetEffectsFor(Thing thing)
+    {
+        return !EffectsDict.TryGetValue(thing, out List<LegendaryEffectDef> value) ? [] : value;
     }
 
     public static void Reroll(Thing thing)
@@ -134,5 +140,46 @@ public class LegendaryEffectGameTracker : GameComponent
         }
         Find.WindowStack.Add(new FloatMenu(options));
         EffectsDict.SetOrAdd(thing, effects);
+    }
+
+    public struct ThingAndEffect
+    {
+        public Thing thing;
+        public LegendaryEffectDef effect;
+    }
+
+    public static List<ThingAndEffect> EffectsForPawn(Pawn pawn)
+    {
+        List<ThingAndEffect> output = [];
+
+        if (pawn == null)
+            return output;
+
+        if (pawn.apparel != null)
+        {
+            foreach (Apparel apparel in pawn.apparel.UnlockedApparel)
+            {
+                output.AddRange(GetEffectsFor(apparel).Select(eff => new ThingAndEffect { thing = apparel, effect = eff }));
+            }
+        }
+
+        if (pawn.equipment != null && pawn.equipment.Primary != null)
+        {
+            output.AddRange(GetEffectsFor(pawn.equipment.Primary).Select(eff => new ThingAndEffect { thing = pawn.equipment.Primary, effect = eff }));
+        }
+
+        return output;
+    }
+
+    public static float CooldownModifier(Pawn pawn)
+    {
+        float modifier = 1f;
+
+        foreach (ThingAndEffect thingAndEffect in EffectsForPawn(pawn))
+        {
+            modifier *= thingAndEffect.effect.RATS_Multiplier;
+        }
+
+        return modifier;
     }
 }

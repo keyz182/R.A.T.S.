@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 
-<Defs>    
+<Defs>
     <StatCategoryDef>
         <defName>RATS_LegendaryEffectStats</defName>
         <label>Legendary effects applied when equipped</label>
         <displayOrder>71</displayOrder>
     </StatCategoryDef>
-    
+
     <StatCategoryDef>
         <defName>Rats_LegendaryEffect_StatCat</defName>
         <label>Legendary Effects:</label>
         <displayOrder>72</displayOrder>
     </StatCategoryDef>
-    
+
     <RATS.LegendaryEffectDef>
         <defName>Rats_LegendaryEffect_Assassins</defName>
         <label>Assassin's</label>
@@ -32,7 +32,7 @@
         <IsForMelee>true</IsForMelee>
         <IsForApparel>false</IsForApparel>
     </RATS.LegendaryEffectDef>
-    
+
     <RATS.LegendaryEffectDef>
         <defName>Rats_LegendaryEffect_Crippling</defName>
         <label>Crippling</label>
@@ -43,7 +43,7 @@
         <IsForMelee>false</IsForMelee>
         <IsForApparel>false</IsForApparel>
     </RATS.LegendaryEffectDef>
-    
+
     <RATS.LegendaryEffectDef>
         <defName>Rats_LegendaryEffect_Explosive</defName>
         <label>Explosive</label>
@@ -53,7 +53,7 @@
         <IsForMelee>false</IsForMelee>
         <IsForApparel>false</IsForApparel>
     </RATS.LegendaryEffectDef>
-    
+
     <EffecterDef>
         <defName>Rats_LegendaryEffect_Explosive_Explosion</defName>
         <children>
@@ -69,7 +69,7 @@
             </li>
         </children>
     </EffecterDef>
-    
+
     <RATS.LegendaryEffectDef>
         <defName>Rats_LegendaryEffect_Incendiary</defName>
         <label>Incendiary</label>
@@ -79,7 +79,7 @@
         <IsForMelee>false</IsForMelee>
         <IsForApparel>false</IsForApparel>
     </RATS.LegendaryEffectDef>
-    
+
     <RATS.LegendaryEffectDef>
         <defName>Rats_LegendaryEffect_Instigating</defName>
         <label>Instigating</label>
@@ -89,7 +89,7 @@
         <IsForMelee>true</IsForMelee>
         <IsForApparel>false</IsForApparel>
     </RATS.LegendaryEffectDef>
-    
+
     <RATS.LegendaryEffectDef>
         <defName>Rats_LegendaryEffect_Junkies</defName>
         <label>Junkie's</label>
@@ -99,7 +99,7 @@
         <IsForMelee>true</IsForMelee>
         <IsForApparel>false</IsForApparel>
     </RATS.LegendaryEffectDef>
-    
+
     <RATS.LegendaryEffectDef>
         <defName>Rats_LegendaryEffect_Powerful</defName>
         <label>Powerful</label>
@@ -109,15 +109,15 @@
         <IsForMelee>true</IsForMelee>
         <IsForApparel>false</IsForApparel>
     </RATS.LegendaryEffectDef>
-    
+
     <RATS.LegendaryEffectDef>
         <defName>Rats_LegendaryEffect_Rapid</defName>
         <label>Rapid</label>
         <description>Boosts firing rate</description>
         <IsForWeapon>true</IsForWeapon>
-        <IsForApparel>true</IsForApparel>
+        <IsForApparel>false</IsForApparel>
     </RATS.LegendaryEffectDef>
-    
+
     <RATS.LegendaryEffectDef>
         <defName>Rats_LegendaryEffect_Enraging</defName>
         <label>Enraging</label>
@@ -127,7 +127,7 @@
         <IsForMelee>false</IsForMelee>
         <IsForApparel>false</IsForApparel>
     </RATS.LegendaryEffectDef>
-    
+
     <DamageDef>
         <defName>RATS_Crippled</defName>
         <label>crippled</label>
@@ -149,7 +149,7 @@
         <armorCategory>Blunt</armorCategory>
         <overkillPctToDestroyPart>1.0</overkillPctToDestroyPart>
     </DamageDef>
-    
+
     <HediffDef ParentName="InjuryBase">
         <defName>RATS_CrippledHediff</defName>
         <label>crippled</label>
@@ -182,7 +182,7 @@
             <destroyedOutLabel>Cut out</destroyedOutLabel>
         </injuryProps>
     </HediffDef>
-    
+
     <RATS.LegendaryEffectDef>
         <defName>Rats_LegendaryEffect_Kneecapper</defName>
         <label>Kneecapper</label>
@@ -193,7 +193,263 @@
         <IsForMelee>true</IsForMelee>
         <IsForApparel>false</IsForApparel>
     </RATS.LegendaryEffectDef>
+
+
+    <HediffDef ParentName="DiseaseBase">
+        <defName>RATS_Poisoning</defName>
+        <label>poisoned</label>
+        <description>Poisoned by a legendary effect.</description>
+        <scenarioCanAdd>false</scenarioCanAdd>
+        <initialSeverity>1</initialSeverity>
+        <comps>
+            <li Class="HediffCompProperties_SeverityPerDay">
+                <severityPerDay>-2.5</severityPerDay>
+            </li>
+        </comps>
+        <stages>
+            <li>
+                <label>recovering</label>
+                <vomitMtbDays>1</vomitMtbDays>
+                <painOffset>0.2</painOffset>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.6</postFactor>
+                    </li>
+                    <li>
+                        <capacity>Moving</capacity>
+                        <postFactor>0.8</postFactor>
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.9</postFactor>
+                    </li>
+                    <li>
+                        <capacity>BloodFiltration</capacity>
+                        <postFactor>0.95</postFactor>
+                    </li>
+                    <li>
+                        <capacity>Eating</capacity>
+                        <postFactor>0.5</postFactor>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <label>major</label>
+                <minSeverity>0.2</minSeverity>
+                <vomitMtbDays>2</vomitMtbDays>
+                <painOffset>0.4</painOffset>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.5</postFactor>
+                    </li>
+                    <li>
+                        <capacity>Moving</capacity>
+                        <postFactor>0.5</postFactor>
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.8</postFactor>
+                    </li>
+                    <li>
+                        <capacity>BloodFiltration</capacity>
+                        <postFactor>0.85</postFactor>
+                    </li>
+                    <li>
+                        <capacity>Talking</capacity>
+                        <postFactor>0.8</postFactor>
+                    </li>
+                    <li>
+                        <capacity>Eating</capacity>
+                        <postFactor>0.3</postFactor>
+                    </li>
+                </capMods>
+            </li>
+            <li>
+                <label>initial</label>
+                <minSeverity>0.8</minSeverity>
+                <vomitMtbDays>4</vomitMtbDays>
+                <painOffset>0.2</painOffset>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <postFactor>0.6</postFactor>
+                    </li>
+                    <li>
+                        <capacity>Moving</capacity>
+                        <postFactor>0.8</postFactor>
+                    </li>
+                    <li>
+                        <capacity>Manipulation</capacity>
+                        <postFactor>0.9</postFactor>
+                    </li>
+                    <li>
+                        <capacity>BloodFiltration</capacity>
+                        <postFactor>0.95</postFactor>
+                    </li>
+                    <li>
+                        <capacity>Eating</capacity>
+                        <postFactor>0.5</postFactor>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <RATS.LegendaryEffectDef>
+        <defName>Rats_LegendaryEffect_Poisoners</defName>
+        <label>Poisoner's</label>
+        <description>Target is poisoned for 10 seconds (3 points poison damage per second).</description>
+        <hediffToApply>RATS_Poisoning</hediffToApply>
+        <IsForWeapon>true</IsForWeapon>
+        <IsForMelee>true</IsForMelee>
+        <IsForApparel>false</IsForApparel>
+    </RATS.LegendaryEffectDef>
+
+    <RATS.LegendaryEffectDef>
+        <defName>Rats_LegendaryEffect_Staggering</defName>
+        <label>Staggering</label>
+        <description>Chance to stagger on hit</description>
+        <IsForWeapon>true</IsForWeapon>
+        <IsForMelee>true</IsForMelee>
+        <IsForApparel>false</IsForApparel>
+        <Stuns>true</Stuns>
+        <StunDuration>600</StunDuration>
+    </RATS.LegendaryEffectDef>
+
+    <RATS.LegendaryEffectDef>
+        <defName>Rats_LegendaryEffect_RATSEnhanced</defName>
+        <label>R.A.T.S. Enhanced</label>
+        <description>33% faster R.A.T.S. cooldown</description>
+        <IsForWeapon>true</IsForWeapon>
+        <IsForMelee>true</IsForMelee>
+        <IsForApparel>false</IsForApparel>
+        <RATS_Multiplier>0.66</RATS_Multiplier>
+    </RATS.LegendaryEffectDef>
+
+    <RATS.LegendaryEffectDef>
+        <defName>Rats_LegendaryEffect_Powered</defName>
+        <label>Powered</label>
+        <description>25% faster R.A.T.S. cooldown</description>
+        <IsForWeapon>false</IsForWeapon>
+        <IsForMelee>false</IsForMelee>
+        <IsForApparel>true</IsForApparel>
+        <RATS_Multiplier>0.75</RATS_Multiplier>
+    </RATS.LegendaryEffectDef>
+
+    <RATS.LegendaryEffectDef>
+        <defName>Rats_LegendaryEffect_Sprinters</defName>
+        <label>Sprinters</label>
+        <description>Increases movement speed by 10%.</description>
+        <IsForWeapon>false</IsForWeapon>
+        <IsForMelee>false</IsForMelee>
+        <IsForApparel>true</IsForApparel>
+        <statFactors>
+            <MoveSpeed>1.1</MoveSpeed>
+        </statFactors>
+    </RATS.LegendaryEffectDef>
+
+    <RATS.LegendaryEffectDef>
+        <defName>Rats_LegendaryEffect_Stable</defName>
+        <label>Stable</label>
+        <description>Decreases risk of mental breaks by 50%.</description>
+        <IsForWeapon>false</IsForWeapon>
+        <IsForMelee>false</IsForMelee>
+        <IsForApparel>true</IsForApparel>
+        <statFactors>
+            <MentalBreakThreshold>0.5</MentalBreakThreshold>
+        </statFactors>
+    </RATS.LegendaryEffectDef>
+
+    <RATS.LegendaryEffectDef>
+        <defName>Rats_LegendaryEffect_Psy</defName>
+        <label>Psychically Sensitive</label>
+        <description>Boosts Psychic Sensitivity by 30%.</description>
+        <IsForWeapon>false</IsForWeapon>
+        <IsForMelee>false</IsForMelee>
+        <IsForApparel>true</IsForApparel>
+        <statFactors>
+            <PsychicSensitivity>1.3</PsychicSensitivity>
+        </statFactors>
+    </RATS.LegendaryEffectDef>
+
+    <RATS.LegendaryEffectDef>
+        <defName>Rats_LegendaryEffect_Smart</defName>
+        <label>Smart</label>
+        <description>Boosts global learning factor by 25%..</description>
+        <IsForWeapon>false</IsForWeapon>
+        <IsForMelee>false</IsForMelee>
+        <IsForApparel>true</IsForApparel>
+        <statFactors>
+            <GlobalLearningFactor>1.25</GlobalLearningFactor>
+        </statFactors>
+    </RATS.LegendaryEffectDef>
+
+    <RATS.LegendaryEffectDef>
+        <defName>Rats_LegendaryEffect_Healing</defName>
+        <label>Healing</label>
+        <description>Boosts injury healing factor by 25%..</description>
+        <IsForWeapon>false</IsForWeapon>
+        <IsForMelee>false</IsForMelee>
+        <IsForApparel>true</IsForApparel>
+        <statFactors>
+            <InjuryHealingFactor>1.25</InjuryHealingFactor>
+        </statFactors>
+    </RATS.LegendaryEffectDef>
+
+    <RATS.LegendaryEffectDef>
+        <defName>Rats_LegendaryEffect_Pocketed</defName>
+        <label>Pocketed</label>
+        <description>Boosts carying capacity by 25%..</description>
+        <IsForWeapon>false</IsForWeapon>
+        <IsForMelee>false</IsForMelee>
+        <IsForApparel>true</IsForApparel>
+        <statFactors>
+            <CarryingCapacity>1.25</CarryingCapacity>
+        </statFactors> 
+    </RATS.LegendaryEffectDef>
+
+    <RATS.LegendaryEffectDef>
+        <defName>Rats_LegendaryEffect_Armourers</defName>
+        <label>Armourer's</label>
+        <description>Boosts armour rating by 25%..</description>
+        <IsForWeapon>false</IsForWeapon>
+        <IsForMelee>false</IsForMelee>
+        <IsForApparel>true</IsForApparel>
+        <statFactors>
+            <ArmorRating_Sharp>1.25</ArmorRating_Sharp>
+            <ArmorRating_Blunt>1.25</ArmorRating_Blunt>
+            <ArmorRating_Heat>1.25</ArmorRating_Heat>
+        </statFactors>
+    </RATS.LegendaryEffectDef>
+
+    <RATS.LegendaryEffectDef>
+        <defName>Rats_LegendaryEffect_Insulated</defName>
+        <label>Insulated</label>
+        <description>Boosts insulation rating by 25%..</description>
+        <IsForWeapon>false</IsForWeapon>
+        <IsForMelee>false</IsForMelee>
+        <IsForApparel>true</IsForApparel>
+        <statFactors>
+            <Insulation_Cold>1.25</Insulation_Cold>
+            <Insulation_Heat>1.25</Insulation_Heat>
+        </statFactors>
+    </RATS.LegendaryEffectDef>    
     
+    <!-- -->
+    <!-- <RATS.LegendaryEffectDef> -->
+    <!--     <defName>Rats_LegendaryEffect_Sharp</defName> -->
+    <!--     <label>Sharp</label> -->
+    <!--     <description>Increases movement speed by 10%.</description> -->
+    <!--     <IsForWeapon>false</IsForWeapon> -->
+    <!--     <IsForMelee>false</IsForMelee> -->
+    <!--     <IsForApparel>true</IsForApparel> -->
+    <!--     <statFactors> -->
+    <!--         <MoveSpeed>1.1</MoveSpeed> -->
+    <!--     </statFactors> -->
+    <!-- </RATS.LegendaryEffectDef> -->
+
     <!-- <RATS.LegendaryEffectDef> -->
     <!--     <defName>Rats_LegendaryEffect_Nimble</defName> -->
     <!--     <label>Nimble</label> -->
@@ -203,23 +459,6 @@
     <!--     <IsForApparel>false</IsForApparel> -->
     <!-- </RATS.LegendaryEffectDef> -->
     <!--      -->
-    <!-- <RATS.LegendaryEffectDef> -->
-    <!--     <defName>Rats_LegendaryEffect_Poisoners</defName> -->
-    <!--     <label>Poisoner's</label> -->
-    <!--     <description>Target is poisoned for 10 seconds (3 points poison damage per second).</description> -->
-    <!--     <IsForWeapon>true</IsForWeapon> -->
-    <!--     <IsForMelee>true</IsForMelee> -->
-    <!--     <IsForApparel>false</IsForApparel> -->
-    <!-- </RATS.LegendaryEffectDef> -->
-    <!--      -->
-    <!-- <RATS.LegendaryEffectDef> -->
-    <!--     <defName>Rats_LegendaryEffect_Staggering</defName> -->
-    <!--     <label>Staggering</label> -->
-    <!--     <description>Chance to stagger on hit</description> -->
-    <!--     <IsForWeapon>true</IsForWeapon> -->
-    <!--     <IsForMelee>true</IsForMelee> -->
-    <!--     <IsForApparel>false</IsForApparel> -->
-    <!-- </RATS.LegendaryEffectDef> -->
     <!--      -->
     <!-- <RATS.LegendaryEffectDef> -->
     <!--     <defName>Rats_LegendaryEffect_TwoShot</defName> -->
@@ -230,12 +469,4 @@
     <!--     <IsForApparel>false</IsForApparel> -->
     <!-- </RATS.LegendaryEffectDef> -->
     <!--      -->
-    <!-- <RATS.LegendaryEffectDef> -->
-    <!--     <defName>Rats_LegendaryEffect_RATSEnhanced</defName> -->
-    <!--     <label>R.A.T.S. Enhanced</label> -->
-    <!--     <description>33% faster R.A.T.S. cooldown</description> -->
-    <!--     <IsForWeapon>true</IsForWeapon> -->
-    <!--     <IsForMelee>true</IsForMelee> -->
-    <!--     <IsForApparel>false</IsForApparel> -->
-    <!-- </RATS.LegendaryEffectDef> -->
 </Defs>

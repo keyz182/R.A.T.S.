@@ -76,13 +76,13 @@ public static class Thing_Patch
             return;
         }
 
-        List<LegendaryEffectDef> effects = LegendaryEffectGameTracker.EffectsDict[__instance].Where(eff => !eff.StatModifiers.NullOrEmpty()).ToList();
+        List<LegendaryEffectDef> effects = LegendaryEffectGameTracker.EffectsDict[__instance].Where(eff => !eff.statOffsets.NullOrEmpty()).ToList();
 
         List<StatDrawEntry> output = __result.ToList();
 
         foreach (LegendaryEffectDef effectDef in effects)
         {
-            foreach (StatModifier statMod in effectDef.StatModifiers)
+            foreach (StatModifier statMod in effectDef.statOffsets)
             {
                 StatDef stat = statMod.stat;
                 StringBuilder stringBuilder = new StringBuilder();
@@ -108,6 +108,38 @@ public static class Thing_Patch
                         statMod.value,
                         StatRequest.ForEmpty(),
                         ToStringNumberSense.Offset,
+                        forceUnfinalizedMode: true,
+                        hyperlinks: hl
+                    ).SetReportText(stringBuilder.ToString())
+                );
+            }
+
+            foreach (StatModifier statMod in effectDef.statFactors)
+            {
+                StatDef stat = statMod.stat;
+                StringBuilder stringBuilder = new StringBuilder();
+                float val = statMod.value;
+
+                if (stat.Worker != null)
+                {
+                    stringBuilder.AppendLine();
+                    stringBuilder.AppendLine();
+                    stringBuilder.AppendLine("StatsReport_BaseValue".Translate() + ": " + stat.ValueToString(val, ToStringNumberSense.Factor, stat.finalizeEquippedStatOffset));
+                    val = StatWorker.StatOffsetFromGear(__instance, stat);
+                    stringBuilder.AppendLine();
+                    stringBuilder.AppendLine("StatsReport_FinalValue".Translate() + ": " + stat.ValueToString(val, ToStringNumberSense.Factor, !stat.formatString.NullOrEmpty()));
+                }
+
+                IEnumerable<Dialog_InfoCard.Hyperlink> hl = Gen.YieldSingle(new Dialog_InfoCard.Hyperlink(effectDef));
+
+                output.Add(
+                    new LegendaryStatDrawEntry(
+                        effectDef,
+                        RATS_DefOf.RATS_LegendaryEffectStats,
+                        stat,
+                        statMod.value,
+                        StatRequest.ForEmpty(),
+                        ToStringNumberSense.Factor,
                         forceUnfinalizedMode: true,
                         hyperlinks: hl
                     ).SetReportText(stringBuilder.ToString())
