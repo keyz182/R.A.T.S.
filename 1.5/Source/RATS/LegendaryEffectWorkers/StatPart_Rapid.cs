@@ -42,7 +42,7 @@ public class StatPart_Rapid : StatPart
                 }
             }
 
-            if (pawn.equipment.Primary != null)
+            if (pawn.equipment != null && pawn.equipment.Primary != null)
             {
                 if (LegendaryEffectGameTracker.HasEffect(pawn.equipment.Primary))
                 {
