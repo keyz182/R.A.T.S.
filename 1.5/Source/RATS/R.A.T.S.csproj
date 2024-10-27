@@ -64,6 +64,12 @@
             <HintPath Condition="Exists('$(SteamPath)/RimWorldWin64_Data')">$(SteamPath)/RimWorldWin64_Data/Managed/UnityEngine.IMGUIModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
+
+        <Reference Include="KeyzMiscResources">
+            <HintPath Condition="Exists('$(SteamPath)/../../workshop/content/294100/3355560776/Assemblies/CombatExtended.dll')">$(SteamPath)/../../workshop/content/294100/3355560776/1.5/Assemblies/Keyz_Misc_Resources.dll</HintPath>
+            <HintPath Condition="!Exists('$(SteamPath)/../../workshop/content/294100/3355560776/Assemblies/CombatExtended.dll')">$(SteamPath)/Mods/KeyzMiscResources/1.5/Assemblies/Keyz_Misc_Resources.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup>
