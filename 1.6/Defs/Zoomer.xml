@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <ThingDef ParentName="BaseBullet">
+        <defName>RATS_Zoomer</defName>
+        <altitudeLayer>MoteOverhead</altitudeLayer>
+        <thingClass>RATS.Thing_Zoomer</thingClass>
+        <label>Zoomer</label>
+        <graphicData>
+            <texPath>Things/RATS_Blank</texPath>
+            <graphicClass>RATS.Graphic_Zoomer</graphicClass>
+            <drawSize>(10,10)</drawSize>
+        </graphicData>
+    </ThingDef>
+</Defs>

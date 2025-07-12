@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Defs>
+    <ThingDef ParentName="ApparelArmorHelmetReconBase">
+        <defName>RATS_RATSLink</defName>
+        <label>RATSLink</label>
+        <description>A neurally linked targeting computer which provides the pawn with the RimTech Assisisted Targeting System.\n\nRimtech's latest breakthrough. Seize the moment, cripple your foes, and rewrite the battlefield. Installs a neural interface allowing colonists to temporarily dilate time and target specific body parts. Improves accuracy and tactical options.\n\nEver wish you could hit that raider right in the kneecap? Now you can. (Results may vary.)</description>
+        <graphicData>
+            <texPath>Things/RATS_Rats</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>1,1</drawSize>
+        </graphicData>
+        <comps>
+            <li Class="RATS.CompProperties_TemporaryHediff_Apparel">
+                <hediff>RATS_RatsLink</hediff>
+                <part>Head</part>
+            </li>
+        </comps>
+        <statBases>
+            <ArmorRating_Sharp>0</ArmorRating_Sharp>
+            <ArmorRating_Blunt>0</ArmorRating_Blunt>
+            <ArmorRating_Heat>0</ArmorRating_Heat>
+            <Insulation_Cold>0</Insulation_Cold>
+            <Insulation_Heat>0</Insulation_Heat>
+        </statBases>
+        <recipeMaker>
+            <researchPrerequisite>RATS_RATS</researchPrerequisite>
+            <displayPriority>400</displayPriority>
+        </recipeMaker>
+        <costList>
+            <ComponentSpacer>2</ComponentSpacer>
+            <ComponentIndustrial>4</ComponentIndustrial>
+            <Plasteel>20</Plasteel>
+            <Steel>40</Steel>
+        </costList>
+        <apparel>
+            <wornGraphicPath>Things/RATS_RatsLink</wornGraphicPath>
+            <renderSkipFlags>
+                <li>None</li>
+            </renderSkipFlags>
+            <countsAsClothingForNudity>false</countsAsClothingForNudity>
+            <bodyPartGroups Inherit="False">
+                <li>UpperHead</li>
+            </bodyPartGroups>
+            <tags Inherit="False">
+                <li>RATS_RATSLink</li>
+            </tags>
+        </apparel>
+        <tradeTags>
+            <li>Clothing</li>
+        </tradeTags>
+        <thingSetMakerTags Inherit="False">
+            <li>RewardStandardLowFreq</li>
+        </thingSetMakerTags>
+    </ThingDef>
+</Defs>

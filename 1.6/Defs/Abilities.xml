@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Defs>
+    <AbilityDef>
+        <defName>RATS_Attack</defName>
+        <label>R.A.T.S.</label>
+        <description>Attack with R.A.T.S.</description>
+        <aiCanUse>false</aiCanUse>
+        <iconPath>UI/RATS_Logo-Small</iconPath>
+        <gizmoClass>RATS.Command_RATS</gizmoClass>
+        <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+        <targetRequired>True</targetRequired>
+        <hotKey>Misc12</hotKey>
+        <hostile>true</hostile>
+        <casterMustBeCapableOfViolence>true</casterMustBeCapableOfViolence>
+        <cooldownTicksRange>600</cooldownTicksRange>
+        <verbProperties>
+            <verbClass>RATS.Verb_AbilityRats</verbClass>
+            <onlyManualCast>true</onlyManualCast>
+            <defaultCooldownTime>30</defaultCooldownTime>
+            <minRange>0</minRange>
+            <surpriseAttack>
+                <extraMeleeDamages>
+                    <li>
+                        <def>Stun</def>
+                        <amount>20</amount>
+                    </li>
+                </extraMeleeDamages>
+            </surpriseAttack>
+            <targetParams>
+                <canTargetLocations>false</canTargetLocations>
+                <canTargetPawns>true</canTargetPawns>
+                <canTargetAnimals>true</canTargetAnimals>
+                <canTargetMechs>true</canTargetMechs>
+                <canTargetMutants>true</canTargetMutants>
+                <canTargetPlants>false</canTargetPlants>
+                <canTargetBuildings>false</canTargetBuildings>
+                <canTargetCorpses>false</canTargetCorpses>
+            </targetParams>
+        </verbProperties>
+        <comps>
+            <li Class="CompProperties_AbilityRequiresCapacity">
+                <capacity>Manipulation</capacity>
+            </li>
+        </comps>
+    </AbilityDef>
+</Defs>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <Operation Class="PatchOperationConditional">
+        <xpath>Defs/StatDef[not(@abstract) and not(@ParentName)]/parts</xpath>
+        <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/StatDef</xpath>
+            <value>
+                <parts />
+            </value>
+        </nomatch>
+    </Operation>
+    
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/StatDef[not(@abstract) and not(@ParentName)]/parts</xpath>
+        <value>
+            <li Class="RATS.LegendaryEffectWorkers.StatPart_LegendaryEffects"/>
+        </value>
+    </Operation>
+</Patch>
