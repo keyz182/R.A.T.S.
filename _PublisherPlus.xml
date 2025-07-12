@@ -3,8 +3,9 @@
   <Excluded>
     <exclude>.git</exclude>
     <exclude>1.5\Source</exclude>
+    <exclude>1.6\Source</exclude>
     <exclude>Assets</exclude>
-    <exclude>Materials</exclude>
+    <exclude>modlist.xml</exclude>
     <exclude>RATS.rws</exclude>
     <exclude>RATS.zip</exclude>
   </Excluded>
