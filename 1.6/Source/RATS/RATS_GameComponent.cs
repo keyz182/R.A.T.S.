@@ -31,12 +31,6 @@ public class RATS_GameComponent(Game game) : GameComponent
         SlowMoCauser = null;
     }
 
-    public override void ExposeData()
-    {
-        ActiveAttacks ??= new Dictionary<Pawn, RATSAction>();
-        Scribe_Collections.Look(ref ActiveAttacks, "ActiveAttacks", LookMode.Reference, LookMode.Reference);
-    }
-
     public override void GameComponentTick()
     {
         // Safety barrier to prevent getting stuck in slowmo

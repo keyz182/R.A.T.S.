@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -32,31 +33,31 @@ public class StatPart_Rapid : StatPart
             int count = 0;
             if (pawn.apparel != null)
             {
-                var legendaryApparel = pawn.apparel.WornApparel.Where(app => app.TryGetQuality(out var quality) && quality == QualityCategory.Legendary);
+                IEnumerable<Apparel> legendaryApparel = pawn.apparel.WornApparel.Where(app => app.TryGetQuality(out var quality) && quality == QualityCategory.Legendary);
                 foreach (Apparel apparel in legendaryApparel)
                 {
-                    if (LegendaryEffectGameTracker.HasEffect(apparel))
+                    if (LegendaryEffectGameTracker.EffectsForThing(apparel, out List<LegendaryEffectDef> effects))
                     {
-                        count += LegendaryEffectGameTracker.EffectsDict[apparel].Count(eff => eff == RATS_DefOf.Rats_LegendaryEffect_Rapid);
+                        count += effects.Count(eff => eff == RATS_DefOf.Rats_LegendaryEffect_Rapid);
                     }
                 }
             }
 
-            if (pawn.equipment != null && pawn.equipment.Primary != null)
+            if (pawn.equipment is { Primary: not null })
             {
-                if (LegendaryEffectGameTracker.HasEffect(pawn.equipment.Primary))
+                if (LegendaryEffectGameTracker.EffectsForThing(pawn.equipment.Primary, out List<LegendaryEffectDef> effects))
                 {
-                    count += LegendaryEffectGameTracker.EffectsDict[pawn.equipment.Primary].Count(eff => eff == RATS_DefOf.Rats_LegendaryEffect_Rapid);
+                    count += effects.Count(eff => eff == RATS_DefOf.Rats_LegendaryEffect_Rapid);
                 }
             }
             return count;
         }
 
-        if (!LegendaryEffectGameTracker.HasEffect(t))
+        if (!LegendaryEffectGameTracker.EffectsForThing(t, out List<LegendaryEffectDef> effectsForT))
         {
             return 0;
         }
 
-        return LegendaryEffectGameTracker.EffectsDict[t].Count;
+        return effectsForT.Count;
     }
 }

@@ -46,9 +46,12 @@ public static class DamageWorker_Patch
             && LegendaryEffectGameTracker.HasEffect(pawn.equipment.Primary)
         )
         {
-            foreach (LegendaryEffectDef effectDef in LegendaryEffectGameTracker.EffectsDict[pawn.equipment.Primary])
+            if (LegendaryEffectGameTracker.EffectsForThing(pawn.equipment.Primary, out List<LegendaryEffectDef> effects))
             {
-                yield return effectDef;
+                foreach (LegendaryEffectDef effectDef in effects)
+                {
+                    yield return effectDef;
+                }
             }
         }
 
@@ -60,9 +63,12 @@ public static class DamageWorker_Patch
                     .Where(LegendaryEffectGameTracker.HasEffect)
             )
             {
-                foreach (LegendaryEffectDef effectDef in LegendaryEffectGameTracker.EffectsDict[apparel])
+                if (LegendaryEffectGameTracker.EffectsForThing(apparel, out List<LegendaryEffectDef> effects))
                 {
-                    yield return effectDef;
+                    foreach (LegendaryEffectDef effectDef in effects)
+                    {
+                        yield return effectDef;
+                    }
                 }
             }
         }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using RimWorld;
 using Verse;
@@ -20,11 +21,14 @@ public class StatPart_LegendaryEffects : StatPart
         }
         else if (req.Thing != null)
         {
-            foreach (LegendaryEffectDef legendaryEffectDef in LegendaryEffectGameTracker.GetEffectsFor(req.Thing))
+            if (LegendaryEffectGameTracker.EffectsForThing(req.Thing, out List<LegendaryEffectDef> effects))
             {
-                val =
-                    legendaryEffectDef.StatFactors.Where(sf => sf.stat == parentStat).Aggregate(val, (current, statModifier) => current * statModifier.value)
-                    + legendaryEffectDef.StatOffsets.Where(sf => sf.stat == parentStat).Sum(statModifier => statModifier.value);
+                foreach (LegendaryEffectDef legendaryEffectDef in effects)
+                {
+                    val =
+                        legendaryEffectDef.StatFactors.Where(sf => sf.stat == parentStat).Aggregate(val, (current, statModifier) => current * statModifier.value)
+                        + legendaryEffectDef.StatOffsets.Where(sf => sf.stat == parentStat).Sum(statModifier => statModifier.value);
+                }
             }
         }
     }
@@ -48,15 +52,19 @@ public class StatPart_LegendaryEffects : StatPart
         }
         else if (req.Thing != null)
         {
-            foreach (LegendaryEffectDef legendaryEffectDef in LegendaryEffectGameTracker.GetEffectsFor(req.Thing))
+            if (LegendaryEffectGameTracker.EffectsForThing(req.Thing, out List<LegendaryEffectDef> effects))
             {
-                foreach (StatModifier effectStatOffset in legendaryEffectDef.StatOffsets.Where(sf => sf.stat == parentStat))
+                foreach (LegendaryEffectDef legendaryEffectDef in effects)
                 {
-                    sb.AppendLine($"{legendaryEffectDef.LabelCap} (Legendary Effect): {effectStatOffset.ValueToStringAsOffset}");
-                }
-                foreach (StatModifier effectStatFactor in legendaryEffectDef.StatFactors.Where(sf => sf.stat == parentStat))
-                {
-                    sb.AppendLine($"{legendaryEffectDef.LabelCap} (Legendary Effect): {effectStatFactor.ToStringAsFactor}");
+                    foreach (StatModifier effectStatOffset in legendaryEffectDef.StatOffsets.Where(sf => sf.stat == parentStat))
+                    {
+                        sb.AppendLine($"{legendaryEffectDef.LabelCap} (Legendary Effect): {effectStatOffset.ValueToStringAsOffset}");
+                    }
+
+                    foreach (StatModifier effectStatFactor in legendaryEffectDef.StatFactors.Where(sf => sf.stat == parentStat))
+                    {
+                        sb.AppendLine($"{legendaryEffectDef.LabelCap} (Legendary Effect): {effectStatFactor.ToStringAsFactor}");
+                    }
                 }
             }
         }

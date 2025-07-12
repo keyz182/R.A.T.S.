@@ -38,12 +38,41 @@ public static class Thing_Patch
 
         StringBuilder sb = new StringBuilder();
 
-        foreach (LegendaryEffectDef legendaryEffectDef in LegendaryEffectGameTracker.EffectsDict[__instance])
+        if (LegendaryEffectGameTracker.EffectsForThing(__instance, out List<LegendaryEffectDef> effects))
         {
-            sb.Append($"{legendaryEffectDef.LabelCap} ");
+            foreach (LegendaryEffectDef effectDef in effects)
+            {
+                sb.Append($"{effectDef.LabelCap} ");
+            }
         }
 
         sb.Append(__result);
+
+        __result = sb.ToString();
+    }
+
+    [HarmonyPatch("DescriptionFlavor", MethodType.Getter)]
+    [HarmonyPostfix]
+    public static void Description_Patch(Thing __instance, ref string __result)
+    {
+        if (!LegendaryEffectGameTracker.HasEffect(__instance))
+        {
+            return;
+        }
+
+        string effectDesc = LegendaryEffectGameTracker.GetEffectDescription(__instance);
+
+        if (effectDesc == null)
+        {
+            return;
+        }
+
+        StringBuilder sb = new(__result);
+
+        sb.AppendLine();
+        sb.AppendLine();
+        sb.AppendLine("RATS_LegendaryStats".Translate());
+        sb.AppendLine(effectDesc);
 
         __result = sb.ToString();
     }
@@ -75,12 +104,12 @@ public static class Thing_Patch
         {
             return;
         }
-
-        List<LegendaryEffectDef> effects = LegendaryEffectGameTracker.EffectsDict[__instance].Where(eff => !eff.statOffsets.NullOrEmpty()).ToList();
+        if (!LegendaryEffectGameTracker.EffectsForThing(__instance, out List<LegendaryEffectDef> effects))
+            return;
 
         List<StatDrawEntry> output = __result.ToList();
 
-        foreach (LegendaryEffectDef effectDef in effects)
+        foreach (LegendaryEffectDef effectDef in effects.Where(eff => !eff.statOffsets.NullOrEmpty()))
         {
             foreach (StatModifier statMod in effectDef.statOffsets)
             {

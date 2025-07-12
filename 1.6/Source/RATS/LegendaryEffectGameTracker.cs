@@ -7,16 +7,62 @@ using Verse;
 
 namespace RATS;
 
+public class LegendaryEffect : IExposable
+{
+    public Thing Owner = null;
+    public List<LegendaryEffectDef> Effects = [];
+
+    public LegendaryEffect() { }
+
+    public LegendaryEffect(Thing owner)
+    {
+        Owner = owner;
+    }
+
+    public LegendaryEffect(Thing owner, List<LegendaryEffectDef> effects)
+    {
+        Owner = owner;
+        Effects = effects;
+    }
+
+    public void ExposeData()
+    {
+        Scribe_References.Look(ref Owner, "Owner");
+        Scribe_Collections.Look(ref Effects, "Effects", LookMode.Def);
+    }
+}
+
 public class LegendaryEffectGameTracker : GameComponent
 {
     public LegendaryEffectGameTracker(Game game) { }
 
-    public static Dictionary<Thing, List<LegendaryEffectDef>> EffectsDict = new Dictionary<Thing, List<LegendaryEffectDef>>();
+    public static List<LegendaryEffect> Effects = new();
 
     public override void ExposeData()
     {
         base.ExposeData();
-        Scribe_Collections.Look(ref EffectsDict, "EffectsMap", LookMode.Reference, LookMode.Def);
+        Scribe_Collections.Look(ref Effects, "Effects", LookMode.Deep);
+    }
+
+    public static bool EffectsForThing(Thing thing, out List<LegendaryEffectDef> effects)
+    {
+        effects = [];
+        LegendaryEffect le = Effects.FirstOrFallback(le => le.Owner == thing);
+        if (le == null)
+            return false;
+        effects = le.Effects;
+        return true;
+    }
+
+    public static void SetEffectsForThing(Thing thing, List<LegendaryEffectDef> effects)
+    {
+        LegendaryEffect le = Effects.FirstOrDefault(le => le.Owner == thing);
+        if (le == null)
+        {
+            le = new LegendaryEffect(thing);
+            Effects.Add(le);
+        }
+        le.Effects = effects;
     }
 
     public static void AddNewLegendaryEffectFor(Thing thing)
@@ -44,32 +90,27 @@ public class LegendaryEffectGameTracker : GameComponent
             return;
         }
 
-        if (!EffectsDict.TryGetValue(thing, out var effects))
+        if (!EffectsForThing(thing, out List<LegendaryEffectDef> effects))
             effects = new List<LegendaryEffectDef>();
 
         effects.Add(effect);
 
-        EffectsDict.SetOrAdd(thing, effects);
+        SetEffectsForThing(thing, effects);
     }
 
     public static void ClearEffectsFor(Thing thing)
     {
-        if (!EffectsDict.TryGetValue(thing, out var effects))
+        if (!EffectsForThing(thing, out List<LegendaryEffectDef> effects))
             effects = new List<LegendaryEffectDef>();
 
         effects.Clear();
 
-        EffectsDict.SetOrAdd(thing, effects);
+        SetEffectsForThing(thing, effects);
     }
 
     public static bool HasEffect(Thing thing)
     {
-        return EffectsDict.ContainsKey(thing) && EffectsDict[thing].Count > 0;
-    }
-
-    public static List<LegendaryEffectDef> GetEffectsFor(Thing thing)
-    {
-        return !EffectsDict.TryGetValue(thing, out List<LegendaryEffectDef> value) ? [] : value;
+        return Effects.Any(e => e.Owner == thing && !e.Effects.NullOrEmpty());
     }
 
     public static void Reroll(Thing thing)
@@ -89,9 +130,12 @@ public class LegendaryEffectGameTracker : GameComponent
         }
 
         StringBuilder body = new StringBuilder();
-        foreach (LegendaryEffectDef effect in EffectsDict[thing])
+        if (EffectsForThing(thing, out List<LegendaryEffectDef> effects))
         {
-            body.AppendLine($" - {effect.LabelCap} - {effect.description}");
+            foreach (LegendaryEffectDef effect in effects)
+            {
+                body.AppendLine($" - {effect.LabelCap} - {effect.description}");
+            }
         }
 
         return RemoveEmptyLines(body.ToString());
@@ -104,7 +148,7 @@ public class LegendaryEffectGameTracker : GameComponent
 
     public static void MakeChangeEffectFloatMenu(Thing thing)
     {
-        if (!EffectsDict.TryGetValue(thing, out List<LegendaryEffectDef> effects))
+        if (!EffectsForThing(thing, out List<LegendaryEffectDef> effects))
             effects = [];
 
         List<LegendaryEffectDef> AllDefs = DefDatabase<LegendaryEffectDef>.AllDefsListForReading;
@@ -139,7 +183,7 @@ public class LegendaryEffectGameTracker : GameComponent
             );
         }
         Find.WindowStack.Add(new FloatMenu(options));
-        EffectsDict.SetOrAdd(thing, effects);
+        SetEffectsForThing(thing, effects);
     }
 
     public struct ThingAndEffect
@@ -159,13 +203,15 @@ public class LegendaryEffectGameTracker : GameComponent
         {
             foreach (Apparel apparel in pawn.apparel.UnlockedApparel)
             {
-                output.AddRange(GetEffectsFor(apparel).Select(eff => new ThingAndEffect { thing = apparel, effect = eff }));
+                if (EffectsForThing(apparel, out List<LegendaryEffectDef> effects))
+                    output.AddRange(effects.Select(eff => new ThingAndEffect { thing = apparel, effect = eff }));
             }
         }
 
         if (pawn.equipment != null && pawn.equipment.Primary != null)
         {
-            output.AddRange(GetEffectsFor(pawn.equipment.Primary).Select(eff => new ThingAndEffect { thing = pawn.equipment.Primary, effect = eff }));
+            if (EffectsForThing(pawn.equipment.Primary, out List<LegendaryEffectDef> effects))
+                output.AddRange(effects.Select(eff => new ThingAndEffect { thing = pawn.equipment.Primary, effect = eff }));
         }
 
         return output;
